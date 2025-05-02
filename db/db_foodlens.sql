@@ -1,56 +1,116 @@
-CREATE TABLE IF NOT EXISTS usuarios (
+-- Tabla principal de usuarios
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    apellidos VARCHAR(100) NOT NULL,
-    fecha_nacimiento DATE NOT NULL,
-    edad INT NOT NULL,
-    sexo CHAR(1) NOT NULL CHECK (sexo IN ('M', 'F', 'O')), --O es Otros
-    objetivo VARCHAR(50) NOT NULL CHECK (objetivo IN (
-  'subir peso', 'bajar peso', 'ganar músculo', 'perder grasa',
-  'mantener peso', 'mejorar salud digestiva', 'controlar azúcar',
-  'reducir colesterol', 'rendimiento deportivo', 'alimentación consciente'
-)),
-    tipo_alimentacion VARCHAR(50) NOT NULL CHECK (tipo_alimentacion IN ('vegetariano', 'vegano', 'omnivoro', 'flexitariano','pescetariano'))
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    birth_date DATE NOT NULL,
+    age INT NOT NULL,
+    gender VARCHAR(20) NOT NULL CHECK (gender IN ('M', 'F', 'O')),
+    goal VARCHAR(100) NOT NULL,
+    diet_type VARCHAR(100) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
--- Alergenos del usuario, pueden ser muchos.
-CREATE TABLE IF NOT EXISTS alergenos_usuario (
+-- Tabla de alérgenos disponibles (maestra)
+CREATE TABLE allergens (
     id SERIAL PRIMARY KEY,
-    id_usuario INT NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
-    alergeno VARCHAR(100) NOT NULL DEFAULT 'ninguno'
+    name VARCHAR(100) NOT NULL,
+    icon_url TEXT,
+    description TEXT
 );
 
--- Preferencias de comida del usuario, pueden ser muchas
-CREATE TABLE IF NOT EXISTS preferencias_usuario (
-    id SERIAL PRIMARY KEY,
-    id_usuario INT NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
-    tipo_cocina VARCHAR(100) NOT NULL DEFAULT 'ninguno'
+-- Tabla de alérgenos que tiene cada usuario (relación M:N)
+CREATE TABLE user_allergens (
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    allergen_id INT REFERENCES allergens(id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, allergen_id)
 );
 
-CREATE TABLE IF NOT EXISTS menus_escaneados (
+-- Registro de comidas: manual o por foto
+CREATE TABLE meal_log (
     id SERIAL PRIMARY KEY,
-    id_usuario INT NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    texto_menu TEXT NOT NULL, -- Resultado OCR completo del menú
-    platos_recomendados TEXT[], -- Lista de platos sugeridos por la IA
-    tipo_entrada VARCHAR(20) DEFAULT 'menu' CHECK (tipo_entrada IN ('menu', 'plato'))
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    meal_date DATE NOT NULL,
+    meal_type VARCHAR(50), -- desayuno, comida, cena, etc.
+    dish_name VARCHAR(255),
+    description TEXT,
+    calories INT,
+    protein DECIMAL(6,2),
+    carbs DECIMAL(6,2),
+    fat DECIMAL(6,2),
+    image_url TEXT,
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS platos_consumidos (
+-- Restaurantes (base estructurada, no los escaneados por usuario)
+CREATE TABLE restaurants (
     id SERIAL PRIMARY KEY,
-    id_usuario INT NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
-    id_menu INT REFERENCES menus_escaneados(id) ON DELETE SET NULL,
-    nombre_plato VARCHAR(255) NOT NULL,
-    info_nutricional JSONB, -- Se guarda en json, la IA : {"kcal": 520, "proteinas": 25, "grasas": 15}
-    foto_url TEXT, -- URL de la foto del plato si se ha hechado
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    name VARCHAR(255) NOT NULL,
+    address TEXT,
+    phone VARCHAR(20),
+    website TEXT
 );
 
-CREATE TABLE IF NOT EXISTS platos_foto_casa (
+-- Menús oficiales de restaurantes (incluye imagen)
+CREATE TABLE menus (
     id SERIAL PRIMARY KEY,
-    id_usuario INT NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
-    nombre_detectado VARCHAR(255) NOT NULL,
-    info_nutricional JSONB, -- Igual que antes
-    foto_url TEXT,
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    restaurant_id INT REFERENCES restaurants(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    image_url TEXT,
+    last_updated TIMESTAMP DEFAULT NOW()
+);
+
+-- Platos dentro de los menús
+CREATE TABLE dishes (
+    id SERIAL PRIMARY KEY,
+    menu_id INT REFERENCES menus(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2),
+    calories INT,
+    protein DECIMAL(6,2),
+    carbs DECIMAL(6,2),
+    fat DECIMAL(6,2)
+);
+
+-- Relación M:N entre platos y alérgenos
+CREATE TABLE dish_allergens_registered (
+    dish_id INT REFERENCES dishes(id) ON DELETE CASCADE,
+    allergen_id INT REFERENCES allergens(id) ON DELETE CASCADE,
+    PRIMARY KEY (dish_id, allergen_id)
+);
+
+-- Menús escaneados por usuarios
+CREATE TABLE restaurant_menus (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    restaurant_name VARCHAR(255),
+    location TEXT,
+    image_url TEXT,
+    scanned_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Platos detectados por la IA desde imágenes de menús escaneados
+CREATE TABLE menu_dishes (
+    id SERIAL PRIMARY KEY,
+    restaurant_menu_id INT REFERENCES restaurant_menus(id) ON DELETE CASCADE,
+    name VARCHAR(255),
+    description TEXT,
+    price DECIMAL(10,2),
+    calories INT,
+    protein DECIMAL(6,2),
+    carbs DECIMAL(6,2),
+    fat DECIMAL(6,2)
+);
+
+-- Valoraciones de usuarios a restaurantes
+CREATE TABLE user_restaurant_ratings (
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    restaurant_id INT REFERENCES restaurants(id) ON DELETE CASCADE,
+    rating INT CHECK (rating BETWEEN 1 AND 5),
+    review TEXT,
+    rated_at TIMESTAMP DEFAULT NOW(),
+    PRIMARY KEY (user_id, restaurant_id)
 );
