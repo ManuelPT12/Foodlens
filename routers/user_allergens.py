@@ -30,4 +30,6 @@ def create_user_allergen(user_allergen: UserAllergenCreate, db: Session = Depend
     db_ua = UserAllergens(**user_allergen.dict())
     db.add(db_ua)
     db.commit()
+    db.refresh(db_ua)
+    redis_client.delete("user_allergens_cache")
     return db_ua

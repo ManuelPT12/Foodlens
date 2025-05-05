@@ -31,4 +31,5 @@ def create_menu(menu: MenuCreate, db: Session = Depends(get_db)):
     db.add(db_menu)
     db.commit()
     db.refresh(db_menu)
+    redis_client.delete("menus_cache")
     return db_menu

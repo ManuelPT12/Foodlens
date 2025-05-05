@@ -30,4 +30,6 @@ def create_dish_allergen(data: DishAllergenRegisteredCreate, db: Session = Depen
     db_record = DishAllergensRegistered(**data.dict())
     db.add(db_record)
     db.commit()
+    db.refresh(db_record)
+    redis_client.delete("dish_allergens_cache")
     return db_record

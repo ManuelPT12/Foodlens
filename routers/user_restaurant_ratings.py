@@ -21,7 +21,8 @@ def get_all_user_restaurant_ratings(db: Session = Depends(get_db)):
     if cached_user_restaurant_ratings:
         return json.loads(cached_user_restaurant_ratings)
     user_restaurant_ratings = db.query(UserRestaurantRatings).all()
-    user_restaurant_ratings_data = [UserRestaurantRatingOut.from_orm(user_restaurant_rating).dict() for user_restaurant_rating in user_restaurant_ratings]
+    user_restaurant_ratings_data = [UserRestaurantRatingOut.from_orm(user_restaurant_rating).dict() 
+                                    for user_restaurant_rating in user_restaurant_ratings]
     redis_client.set("user_restaurant_ratings_cache", json.dumps(user_restaurant_ratings_data), ex=60)
     return user_restaurant_ratings_data
 
@@ -30,4 +31,6 @@ def create_rating(rating: UserRestaurantRatingCreate, db: Session = Depends(get_
     db_rating = UserRestaurantRatings(**rating.dict())
     db.add(db_rating)
     db.commit()
+    db.refresh(db_rating)
+    redis_client.delete("user_restaurant_ratings_cache")
     return db_rating

@@ -31,4 +31,5 @@ def create_restaurant(rest: RestaurantCreate, db: Session = Depends(get_db)):
     db.add(db_rest)
     db.commit()
     db.refresh(db_rest)
+    redis_client.delete("restaurants_cache")
     return db_rest

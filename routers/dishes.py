@@ -31,5 +31,5 @@ def create_dish(dish: DishCreate, db: Session = Depends(get_db)):
     db.add(new_dish)
     db.commit()
     db.refresh(new_dish)
-    redis_client.delete("dishes_cache")  # Limpiar la caché
+    redis_client.delete("dishes_cache")
     return new_dish
