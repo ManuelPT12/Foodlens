@@ -9,11 +9,25 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   // Start date for the 7-day window
   late DateTime _startDate;
   // Selected index within the window (0..6)
   int _selectedDayIndex = 3;
+  // int _currentIndex = 0;
+  late final AnimationController _pulseController;
+  late final Animation<double> _pulseAnimation;
+
+  // final _pages = [HomePage(), RestaurantesPage(), DiarioPage(), DietistaPage()];
+
+  final _labels = ['Home','Qué comer','Diario', 'Dietista'];
+  final _icons = [
+    Icons.home,
+    Icons.restaurant_menu,
+    Icons.library_books,
+    Icons.support_agent,
+  ];
 
   @override
   void initState() {
@@ -21,6 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
     // Center today in the window by subtracting 3 days
     final today = DateTime.now();
     _startDate = today.subtract(const Duration(days: 3));
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    )..repeat(reverse: true);
+    _pulseAnimation = Tween<double>(begin: 0, end: 8).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
   }
 
   List<DateTime> get _days =>
@@ -30,6 +51,12 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _startDate = _startDate.add(Duration(days: days));
     });
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
   }
 
   @override
@@ -167,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             const SizedBox(height: 16),
-           const SizedBox(height: 16),
+            const SizedBox(height: 16),
             // Alimentos registrados con padding horizontal
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -253,39 +280,148 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.pushNamed(context, '/camera'),
-        backgroundColor: const Color(0xFFF68D2E),
-        icon: const Icon(Icons.camera_alt),
-        label: const Text('Analizar comida'),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      bottomNavigationBar: BottomAppBar(
-        color: const Color(0xFF4DB879),
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 6,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: AnimatedBuilder(
+        animation: _pulseAnimation,
+        builder: (context, _) {
+          return Stack(
+            alignment: Alignment.center,
             children: [
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.home, color: Colors.white)),
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.book, color: Colors.white)),
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.more_horiz, color: Colors.white)),
+              // 1) El pulso: tamaño fijo, sombra animada
+              Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFF68D2E).withOpacity(0.5),
+                      blurRadius: _pulseAnimation.value,
+                      spreadRadius: _pulseAnimation.value,
+                    ),
+                  ],
+                ),
+              ),
+              // 2) El botón: tamaño a medida, sin afectar al pulso
+              SizedBox(
+                width: 75, // aquí defines el nuevo tamaño
+                height: 75,
+                child: FloatingActionButton(
+                  onPressed: () => Navigator.pushNamed(context, '/camera'),
+                  backgroundColor: const Color(0xFFF68D2E),
+                  elevation: 4,
+                  shape: const CircleBorder(),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // const Icon(
+                      //   Icons.crop_free_outlined,     // cuatro L apuntando hacia fuera
+                      //   size: 60,            // ajústalo para que encaje perfectamente
+                      //   color: Colors.white, // mismo color que el icono
+                      // ),
+                      CustomPaint(
+                        size: const Size(48, 48),
+                        painter: CornerLPainter(
+                          strokeWidth: 2, // aquí el grosor que quieras
+                          color: Colors.white,
+                        ),
+                      ),
+                      // Icono en el centro
+                      const Icon(Icons.fastfood, size: 32, color: Colors.white),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+      // 3) El BottomAppBar con notch
+      bottomNavigationBar: BottomAppBar(
+        color: const Color(0xFFFCF6EC),
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 12,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0),
+          child: Row(
+            children: [
+              // 3a) Grupo izquierdo: Home & Diario
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildNavItem(0),
+                    _buildNavItem(1),
+                  ],
+                ),
+              ),
+
+              // 3b) Espacio para el FAB
+              const SizedBox(width: 90),
+
+              // 3c) Grupo derecho: Restaurantes & Dietista
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildNavItem(2),
+                    _buildNavItem(3),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
   }
-}
 
+  Widget _buildNavItem(int index) {
+    final _currentIndex = 0; //quitar
+    final bool selected = index == _currentIndex;
+    final Color activeColor = const Color(0xFFF68D2E);
+    final Color inactiveColor = const Color(0xFF0F3C33);
+    final color = selected ? activeColor : inactiveColor;
+
+    return GestureDetector(
+      // onTap: () => setState(() {
+      //   _currentIndex = index;
+      // }),
+      behavior: HitTestBehavior.opaque,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // 1) Ícono con sombra si está activo
+          Container(
+            decoration: selected
+                ? BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: color.withOpacity(0.2),
+                        blurRadius: 6,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  )
+                : null,
+            child: Icon(_icons[index], color: color),
+          ),
+          const SizedBox(height: 4),
+          // 2) Label debajo
+          Text(
+            _labels[index],
+            style: TextStyle(
+              fontSize: 12,
+              color: color,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 class _MealCard extends StatelessWidget {
   const _MealCard({Key? key}) : super(key: key);
 
@@ -330,13 +466,26 @@ class _MealCard extends StatelessWidget {
                       PopupMenuButton<String>(
                         padding: EdgeInsets.zero,
                         iconSize: 20,
-                        icon: const Icon(Icons.more_vert, color: Color(0xFF0F3C33)),
+                        icon: const Icon(
+                          Icons.more_vert,
+                          color: Color(0xFF0F3C33),
+                        ),
                         onSelected: (value) {},
-                        itemBuilder: (_) => [
-                          const PopupMenuItem(value: 'edit', child: Text('Editar')),
-                          const PopupMenuItem(value: 'delete', child: Text('Eliminar')),
-                          const PopupMenuItem(value: 'copy', child: Text('Copiar')),
-                        ],
+                        itemBuilder:
+                            (_) => [
+                              const PopupMenuItem(
+                                value: 'edit',
+                                child: Text('Editar'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'delete',
+                                child: Text('Eliminar'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'copy',
+                                child: Text('Copiar'),
+                              ),
+                            ],
                         constraints: const BoxConstraints(minWidth: 50),
                       ),
                     ],
@@ -344,10 +493,7 @@ class _MealCard extends StatelessWidget {
                   // const SizedBox(height: 2),
                   Text(
                     'Cena · Hoy 17:26',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 12,
-                    ),
+                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
                   ),
                   // const Spacer(),
                   Row(
@@ -435,4 +581,61 @@ class _CircleInfo extends StatelessWidget {
       ],
     );
   }
+}
+
+class CornerLPainter extends CustomPainter {
+  final double strokeWidth;
+  final Color color;
+  CornerLPainter({required this.strokeWidth, required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint =
+        Paint()
+          ..color = color
+          ..strokeWidth = strokeWidth
+          ..style = PaintingStyle.stroke
+          ..strokeJoin =
+              StrokeJoin
+                  .bevel // ¡IMPORTANTE para quitar el pico!
+          ..strokeCap = StrokeCap.butt; // cortes cuadrados
+
+    final double inset = 4 + strokeWidth / 2; // separación icono ↔ L
+    final double len = 12; // longitud de cada brazo
+
+    // ┌ Superior-izquierda ┐
+    Path tl =
+        Path()
+          ..moveTo(inset, inset + len)
+          ..lineTo(inset, inset)
+          ..lineTo(inset + len, inset);
+    canvas.drawPath(tl, paint);
+
+    // ┐ Superior-derecha ┌
+    Path tr =
+        Path()
+          ..moveTo(size.width - inset - len, inset)
+          ..lineTo(size.width - inset, inset)
+          ..lineTo(size.width - inset, inset + len);
+    canvas.drawPath(tr, paint);
+
+    // └ Inferior-izquierda ┘
+    Path bl =
+        Path()
+          ..moveTo(inset, size.height - inset - len)
+          ..lineTo(inset, size.height - inset)
+          ..lineTo(inset + len, size.height - inset);
+    canvas.drawPath(bl, paint);
+
+    // ┘ Inferior-derecha └
+    Path br =
+        Path()
+          ..moveTo(size.width - inset - len, size.height - inset)
+          ..lineTo(size.width - inset, size.height - inset)
+          ..lineTo(size.width - inset, size.height - inset - len);
+    canvas.drawPath(br, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter old) => false;
 }
