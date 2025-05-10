@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'diary.dart';
+import 'dietist.dart';
+import 'what_to_eat.dart';
+
 
 class HomeScreen extends StatefulWidget {
   final String userName;
@@ -11,17 +15,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
-  // Start date for the 7-day window
-  late DateTime _startDate;
-  // Selected index within the window (0..6)
-  int _selectedDayIndex = 3;
-  // int _currentIndex = 0;
+  // Índice de la pestaña activa
+  int _currentIndex = 0;
+
+  // Controles de animación del pulso
   late final AnimationController _pulseController;
   late final Animation<double> _pulseAnimation;
 
-  // final _pages = [HomePage(), RestaurantesPage(), DiarioPage(), DietistaPage()];
+  // Datos para el calendario deslizante
+  late DateTime _startDate;
+  int _selectedDayIndex = 3;
 
-  final _labels = ['Home','Qué comer','Diario', 'Dietista'];
+  // Etiquetas e íconos de navegación
+  final _labels = ['Home', 'Qué comer', 'Diario', 'Dietista'];
   final _icons = [
     Icons.home,
     Icons.restaurant_menu,
@@ -61,10 +67,6 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final days = _days;
-    final selectedDate = days[_selectedDayIndex];
-    final monthLabel = DateFormat.yMMMM('es').format(selectedDate);
-
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
@@ -93,194 +95,20 @@ class _HomeScreenState extends State<HomeScreen>
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(2),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Month label
-            Center(
-              child: Text(
-                monthLabel,
-                style: const TextStyle(fontSize: 14, color: Colors.grey),
-              ),
-            ),
-            // Days slider row
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Color(0xFF0F3C33)),
-                  onPressed: () => _shiftWindow(-1),
-                ),
-                Expanded(
-                  child: SizedBox(
-                    height: 40,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: days.length,
-                      // separatorBuilder: (_, __) => const SizedBox(width: 2),
-                      itemBuilder: (context, idx) {
-                        final day = days[idx];
-                        final isSelected = idx == _selectedDayIndex;
-                        final weekday = DateFormat.E('es').format(day);
-                        // Disable future days beyond today + 2
-                        final tooFuture = day.isAfter(
-                          DateTime.now().add(const Duration(days: 0)),
-                        );
-                        return GestureDetector(
-                          onTap:
-                              tooFuture
-                                  ? null
-                                  : () =>
-                                      setState(() => _selectedDayIndex = idx),
-                          child: Container(
-                            width: 40,
-                            margin: const EdgeInsets.symmetric(horizontal: 2),
-                            decoration: BoxDecoration(
-                              color:
-                                  isSelected
-                                      ? const Color(0xFFF68D2E)
-                                      : Colors.white,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Opacity(
-                              opacity: tooFuture ? 0.4 : 1.0,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    weekday,
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      color:
-                                          isSelected
-                                              ? Colors.white
-                                              : const Color(0xFF0F3C33),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    '${day.day}',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color:
-                                          isSelected
-                                              ? Colors.white
-                                              : const Color(0xFF0F3C33),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.arrow_forward,
-                    color: Color(0xFF0F3C33),
-                  ),
-                  // Sólo habilita "adelante" si el último día es <= hoy+2
-                  onPressed:
-                      _days.last.isBefore(
-                            DateTime.now().add(const Duration(days: 2)),
-                          )
-                          ? () => _shiftWindow(1)
-                          : null,
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            const SizedBox(height: 16),
-            // Alimentos registrados con padding horizontal
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Alimentos registrados',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF0F3C33),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_forward,
-                      color: Color(0xFF0F3C33),
-                    ),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              height: 100,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 3,
-                  itemBuilder: (ctx, i) => const _MealCard(),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            // Resumen de Nutrientes con padding
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: const Text(
-                'Resumen de Nutrientes',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF0F3C33),
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: const [
-                  _CircleInfo(
-                    label: 'Calorías',
-                    value: 586,
-                    unit: '2019',
-                    color: Color(0xFFE94B35),
-                  ),
-                  _CircleInfo(
-                    label: 'Proteína',
-                    value: 37,
-                    unit: '151',
-                    color: Color(0xFF0F3C33),
-                  ),
-                  _CircleInfo(
-                    label: 'Grasa',
-                    value: 31,
-                    unit: '67',
-                    color: Color(0xFFF68D2E),
-                  ),
-                  _CircleInfo(
-                    label: 'Carbohidr',
-                    value: 40,
-                    unit: '201',
-                    color: Color(0xFF4DB879),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          HomePageContent(
+            days: _days,
+            selectedDayIndex: _selectedDayIndex,
+            onSelectDay: (idx) => setState(() => _selectedDayIndex = idx),
+            shiftWindow: _shiftWindow,
+          ),
+          const WhatToEatPage(),
+          const DiaryPage(),
+          const DietistPage(),
+        ],
       ),
-
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: AnimatedBuilder(
         animation: _pulseAnimation,
@@ -345,29 +173,19 @@ class _HomeScreenState extends State<HomeScreen>
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 0),
           child: Row(
-            children: [
-              // 3a) Grupo izquierdo: Home & Diario
+            children: [ 
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildNavItem(0),
-                    _buildNavItem(1),
-                  ],
+                  children: [_buildNavItem(0), _buildNavItem(1)],
                 ),
               ),
-
-              // 3b) Espacio para el FAB
+              // Espacio para el FAB
               const SizedBox(width: 90),
-
-              // 3c) Grupo derecho: Restaurantes & Dietista
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildNavItem(2),
-                    _buildNavItem(3),
-                  ],
+                  children: [_buildNavItem(2), _buildNavItem(3)],
                 ),
               ),
             ],
@@ -378,43 +196,233 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _buildNavItem(int index) {
-    final _currentIndex = 0; //quitar
     final bool selected = index == _currentIndex;
     final Color activeColor = const Color(0xFFF68D2E);
     final Color inactiveColor = const Color(0xFF0F3C33);
     final color = selected ? activeColor : inactiveColor;
 
     return GestureDetector(
-      // onTap: () => setState(() {
-      //   _currentIndex = index;
-      // }),
+      onTap: () => setState(() {
+        _currentIndex = index;
+      }),
       behavior: HitTestBehavior.opaque,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           // 1) Ícono con sombra si está activo
           Container(
-            decoration: selected
-                ? BoxDecoration(
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: color.withOpacity(0.2),
-                        blurRadius: 6,
-                        spreadRadius: 1,
-                      ),
-                    ],
-                  )
-                : null,
+            decoration:
+                selected
+                    ? BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: color.withOpacity(0.2),
+                          blurRadius: 6,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    )
+                    : null,
             child: Icon(_icons[index], color: color),
           ),
           const SizedBox(height: 4),
           // 2) Label debajo
-          Text(
-            _labels[index],
-            style: TextStyle(
-              fontSize: 12,
-              color: color,
+          Text(_labels[index], style: TextStyle(fontSize: 12, color: color)),
+        ],
+      ),
+    );
+  }
+}
+
+// Contenido de la página Home
+class HomePageContent extends StatelessWidget {
+  final List<DateTime> days;
+  final int selectedDayIndex;
+  final ValueChanged<int> onSelectDay;
+  final void Function(int) shiftWindow;
+  const HomePageContent({
+    Key? key,
+    required this.days,
+    required this.selectedDayIndex,
+    required this.onSelectDay,
+    required this.shiftWindow,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedDate = days[selectedDayIndex];
+    final monthLabel = DateFormat.yMMMM('es').format(selectedDate);
+
+    return Padding(
+      padding: const EdgeInsets.all(2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Month label
+          Center(
+            child: Text(
+              monthLabel,
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+          ),
+          // Days slider row
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back, color: Color(0xFF0F3C33)),
+                onPressed: () => shiftWindow(-1),
+              ),
+              Expanded(
+                child: SizedBox(
+                  height: 40,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: days.length,
+                    // separatorBuilder: (_, __) => const SizedBox(width: 2),
+                    itemBuilder: (context, idx) {
+                      final day = days[idx];
+                      final isSelected = idx == selectedDayIndex;
+                      final weekday = DateFormat.E('es').format(day);
+                      // Disable future days beyond today + 2
+                      final tooFuture = day.isAfter(
+                        DateTime.now().add(const Duration(days: 0)),
+                      );
+                      return GestureDetector(
+                        onTap: tooFuture ? null : () => onSelectDay(idx),
+                        child: Container(
+                          width: 40,
+                          margin: const EdgeInsets.symmetric(horizontal: 2),
+                          decoration: BoxDecoration(
+                            color:
+                                isSelected
+                                    ? const Color(0xFFF68D2E)
+                                    : Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Opacity(
+                            opacity: tooFuture ? 0.4 : 1.0,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  weekday,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color:
+                                        isSelected
+                                            ? Colors.white
+                                            : const Color(0xFF0F3C33),
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  '${day.day}',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color:
+                                        isSelected
+                                            ? Colors.white
+                                            : const Color(0xFF0F3C33),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.arrow_forward, color: Color(0xFF0F3C33)),
+                onPressed: days.last.isBefore(DateTime.now().add(const Duration(days: 2))) ? () => shiftWindow(1) : null,
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          const SizedBox(height: 16),
+          // Alimentos registrados con padding horizontal
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Alimentos registrados',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF0F3C33),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.arrow_forward,
+                    color: Color(0xFF0F3C33),
+                  ),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 100,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 3,
+                itemBuilder: (ctx, i) => const _MealCard(),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          // Resumen de Nutrientes con padding
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: const Text(
+              'Resumen de Nutrientes',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF0F3C33),
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                _CircleInfo(
+                  label: 'Calorías',
+                  value: 586,
+                  unit: '2019',
+                  color: Color(0xFFE94B35),
+                ),
+                _CircleInfo(
+                  label: 'Proteína',
+                  value: 37,
+                  unit: '151',
+                  color: Color(0xFF0F3C33),
+                ),
+                _CircleInfo(
+                  label: 'Grasa',
+                  value: 31,
+                  unit: '67',
+                  color: Color(0xFFF68D2E),
+                ),
+                _CircleInfo(
+                  label: 'Carbohidr',
+                  value: 40,
+                  unit: '201',
+                  color: Color(0xFF4DB879),
+                ),
+              ],
             ),
           ),
         ],
@@ -422,6 +430,7 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 }
+
 class _MealCard extends StatelessWidget {
   const _MealCard({Key? key}) : super(key: key);
 
