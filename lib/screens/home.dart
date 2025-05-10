@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'diary.dart';
+import 'dietist.dart';
+import 'what_to_eat.dart';
+
 
 class HomeScreen extends StatefulWidget {
   final String userName;
@@ -9,11 +13,27 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  // Start date for the 7-day window
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  // Índice de la pestaña activa
+  int _currentIndex = 0;
+
+  // Controles de animación del pulso
+  late final AnimationController _pulseController;
+  late final Animation<double> _pulseAnimation;
+
+  // Datos para el calendario deslizante
   late DateTime _startDate;
-  // Selected index within the window (0..6)
   int _selectedDayIndex = 3;
+
+  // Etiquetas e íconos de navegación
+  final _labels = ['Home', 'Qué comer', 'Diario', 'Dietista'];
+  final _icons = [
+    Icons.home,
+    Icons.restaurant_menu,
+    Icons.library_books,
+    Icons.support_agent,
+  ];
 
   @override
   void initState() {
@@ -21,6 +41,13 @@ class _HomeScreenState extends State<HomeScreen> {
     // Center today in the window by subtracting 3 days
     final today = DateTime.now();
     _startDate = today.subtract(const Duration(days: 3));
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    )..repeat(reverse: true);
+    _pulseAnimation = Tween<double>(begin: 0, end: 8).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
   }
 
   List<DateTime> get _days =>
@@ -33,11 +60,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final days = _days;
-    final selectedDate = days[_selectedDayIndex];
-    final monthLabel = DateFormat.yMMMM('es').format(selectedDate);
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
@@ -66,89 +95,266 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(2),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Month label
-            Center(
-              child: Text(
-                monthLabel,
-                style: const TextStyle(fontSize: 14, color: Colors.grey),
-              ),
-            ),
-            // Days slider row
-            Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Color(0xFF0F3C33)),
-                  onPressed: () => _shiftWindow(-1),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          HomePageContent(
+            days: _days,
+            selectedDayIndex: _selectedDayIndex,
+            onSelectDay: (idx) => setState(() => _selectedDayIndex = idx),
+            shiftWindow: _shiftWindow,
+          ),
+          const WhatToEatPage(),
+          const DiaryPage(),
+          const DietistPage(),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: AnimatedBuilder(
+        animation: _pulseAnimation,
+        builder: (context, _) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              // 1) El pulso: tamaño fijo, sombra animada
+              Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFF68D2E).withOpacity(0.5),
+                      blurRadius: _pulseAnimation.value,
+                      spreadRadius: _pulseAnimation.value,
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: SizedBox(
-                    height: 40,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: days.length,
-                      // separatorBuilder: (_, __) => const SizedBox(width: 2),
-                      itemBuilder: (context, idx) {
-                        final day = days[idx];
-                        final isSelected = idx == _selectedDayIndex;
-                        final weekday = DateFormat.E('es').format(day);
-                        // Disable future days beyond today + 2
-                        final tooFuture = day.isAfter(
-                          DateTime.now().add(const Duration(days: 0)),
-                        );
-                        return GestureDetector(
-                          onTap:
-                              tooFuture
-                                  ? null
-                                  : () =>
-                                      setState(() => _selectedDayIndex = idx),
-                          child: Container(
-                            width: 40,
-                            margin: const EdgeInsets.symmetric(horizontal: 2),
-                            decoration: BoxDecoration(
-                              color:
-                                  isSelected
-                                      ? const Color(0xFFF68D2E)
-                                      : Colors.white,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            child: Opacity(
-                              opacity: tooFuture ? 0.4 : 1.0,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    weekday,
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      color:
-                                          isSelected
-                                              ? Colors.white
-                                              : const Color(0xFF0F3C33),
-                                    ),
+              ),
+              // 2) El botón: tamaño a medida, sin afectar al pulso
+              SizedBox(
+                width: 75, // aquí defines el nuevo tamaño
+                height: 75,
+                child: FloatingActionButton(
+                  onPressed: () => Navigator.pushNamed(context, '/camera'),
+                  backgroundColor: const Color(0xFFF68D2E),
+                  elevation: 4,
+                  shape: const CircleBorder(),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // const Icon(
+                      //   Icons.crop_free_outlined,     // cuatro L apuntando hacia fuera
+                      //   size: 60,            // ajústalo para que encaje perfectamente
+                      //   color: Colors.white, // mismo color que el icono
+                      // ),
+                      CustomPaint(
+                        size: const Size(48, 48),
+                        painter: CornerLPainter(
+                          strokeWidth: 2, // aquí el grosor que quieras
+                          color: Colors.white,
+                        ),
+                      ),
+                      // Icono en el centro
+                      const Icon(Icons.fastfood, size: 32, color: Colors.white),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+      // 3) El BottomAppBar con notch
+      bottomNavigationBar: BottomAppBar(
+        color: const Color(0xFFFCF6EC),
+        shape: const CircularNotchedRectangle(),
+        notchMargin: 12,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0),
+          child: Row(
+            children: [ 
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [_buildNavItem(0), _buildNavItem(1)],
+                ),
+              ),
+              // Espacio para el FAB
+              const SizedBox(width: 90),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [_buildNavItem(2), _buildNavItem(3)],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavItem(int index) {
+    final bool selected = index == _currentIndex;
+    final Color activeColor = const Color(0xFFF68D2E);
+    final Color inactiveColor = const Color(0xFF0F3C33);
+    final color = selected ? activeColor : inactiveColor;
+
+    return GestureDetector(
+      onTap: () => setState(() {
+        _currentIndex = index;
+      }),
+      behavior: HitTestBehavior.opaque,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // 1) Ícono con sombra si está activo
+          Container(
+            decoration:
+                selected
+                    ? BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: color.withOpacity(0.2),
+                          blurRadius: 6,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                    )
+                    : null,
+            child: Icon(_icons[index], color: color),
+          ),
+          const SizedBox(height: 4),
+          // 2) Label debajo
+          Text(_labels[index], style: TextStyle(fontSize: 12, color: color)),
+        ],
+      ),
+    );
+  }
+}
+
+// Contenido de la página Home
+class HomePageContent extends StatelessWidget {
+  final List<DateTime> days;
+  final int selectedDayIndex;
+  final ValueChanged<int> onSelectDay;
+  final void Function(int) shiftWindow;
+  const HomePageContent({
+    Key? key,
+    required this.days,
+    required this.selectedDayIndex,
+    required this.onSelectDay,
+    required this.shiftWindow,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedDate = days[selectedDayIndex];
+    final monthLabel = DateFormat.yMMMM('es').format(selectedDate);
+
+    return Padding(
+      padding: const EdgeInsets.all(2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Month label
+          Center(
+            child: Text(
+              monthLabel,
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+          ),
+          // Days slider row
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back, color: Color(0xFF0F3C33)),
+                onPressed: () => shiftWindow(-1),
+              ),
+              Expanded(
+                child: SizedBox(
+                  height: 40,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: days.length,
+                    // separatorBuilder: (_, __) => const SizedBox(width: 2),
+                    itemBuilder: (context, idx) {
+                      final day = days[idx];
+                      final isSelected = idx == selectedDayIndex;
+                      final weekday = DateFormat.E('es').format(day);
+                      // Disable future days beyond today + 2
+                      final tooFuture = day.isAfter(
+                        DateTime.now().add(const Duration(days: 0)),
+                      );
+                      return GestureDetector(
+                        onTap: tooFuture ? null : () => onSelectDay(idx),
+                        child: Container(
+                          width: 40,
+                          margin: const EdgeInsets.symmetric(horizontal: 2),
+                          decoration: BoxDecoration(
+                            color:
+                                isSelected
+                                    ? const Color(0xFFF68D2E)
+                                    : Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Opacity(
+                            opacity: tooFuture ? 0.4 : 1.0,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  weekday,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color:
+                                        isSelected
+                                            ? Colors.white
+                                            : const Color(0xFF0F3C33),
                                   ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    '${day.day}',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color:
-                                          isSelected
-                                              ? Colors.white
-                                              : const Color(0xFF0F3C33),
-                                    ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  '${day.day}',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color:
+                                        isSelected
+                                            ? Colors.white
+                                            : const Color(0xFF0F3C33),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.arrow_forward, color: Color(0xFF0F3C33)),
+                onPressed: days.last.isBefore(DateTime.now().add(const Duration(days: 2))) ? () => shiftWindow(1) : null,
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          const SizedBox(height: 16),
+          // Alimentos registrados con padding horizontal
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Alimentos registrados',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF0F3C33),
                   ),
                 ),
                 IconButton(
@@ -156,131 +362,70 @@ class _HomeScreenState extends State<HomeScreen> {
                     Icons.arrow_forward,
                     color: Color(0xFF0F3C33),
                   ),
-                  // Sólo habilita "adelante" si el último día es <= hoy+2
-                  onPressed:
-                      _days.last.isBefore(
-                            DateTime.now().add(const Duration(days: 2)),
-                          )
-                          ? () => _shiftWindow(1)
-                          : null,
+                  onPressed: () {},
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-           const SizedBox(height: 16),
-            // Alimentos registrados con padding horizontal
-            Padding(
+          ),
+          const SizedBox(height: 8),
+          SizedBox(
+            height: 100,
+            child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Alimentos registrados',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF0F3C33),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.arrow_forward,
-                      color: Color(0xFF0F3C33),
-                    ),
-                    onPressed: () {},
-                  ),
-                ],
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 3,
+                itemBuilder: (ctx, i) => const _MealCard(),
               ),
             ),
-            const SizedBox(height: 8),
-            SizedBox(
-              height: 100,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 3,
-                  itemBuilder: (ctx, i) => const _MealCard(),
+          ),
+          const SizedBox(height: 16),
+          // Resumen de Nutrientes con padding
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: const Text(
+              'Resumen de Nutrientes',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF0F3C33),
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                _CircleInfo(
+                  label: 'Calorías',
+                  value: 586,
+                  unit: '2019',
+                  color: Color(0xFFE94B35),
                 ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            // Resumen de Nutrientes con padding
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: const Text(
-                'Resumen de Nutrientes',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+                _CircleInfo(
+                  label: 'Proteína',
+                  value: 37,
+                  unit: '151',
                   color: Color(0xFF0F3C33),
                 ),
-              ),
+                _CircleInfo(
+                  label: 'Grasa',
+                  value: 31,
+                  unit: '67',
+                  color: Color(0xFFF68D2E),
+                ),
+                _CircleInfo(
+                  label: 'Carbohidr',
+                  value: 40,
+                  unit: '201',
+                  color: Color(0xFF4DB879),
+                ),
+              ],
             ),
-            const SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: const [
-                  _CircleInfo(
-                    label: 'Calorías',
-                    value: 586,
-                    unit: '2019',
-                    color: Color(0xFFE94B35),
-                  ),
-                  _CircleInfo(
-                    label: 'Proteína',
-                    value: 37,
-                    unit: '151',
-                    color: Color(0xFF0F3C33),
-                  ),
-                  _CircleInfo(
-                    label: 'Grasa',
-                    value: 31,
-                    unit: '67',
-                    color: Color(0xFFF68D2E),
-                  ),
-                  _CircleInfo(
-                    label: 'Carbohidr',
-                    value: 40,
-                    unit: '201',
-                    color: Color(0xFF4DB879),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Navigator.pushNamed(context, '/camera'),
-        backgroundColor: const Color(0xFFF68D2E),
-        icon: const Icon(Icons.camera_alt),
-        label: const Text('Analizar comida'),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      bottomNavigationBar: BottomAppBar(
-        color: const Color(0xFF4DB879),
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 6,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.home, color: Colors.white)),
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.book, color: Colors.white)),
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.more_horiz, color: Colors.white)),
-            ],
           ),
-        ),
+        ],
       ),
     );
   }
@@ -330,13 +475,26 @@ class _MealCard extends StatelessWidget {
                       PopupMenuButton<String>(
                         padding: EdgeInsets.zero,
                         iconSize: 20,
-                        icon: const Icon(Icons.more_vert, color: Color(0xFF0F3C33)),
+                        icon: const Icon(
+                          Icons.more_vert,
+                          color: Color(0xFF0F3C33),
+                        ),
                         onSelected: (value) {},
-                        itemBuilder: (_) => [
-                          const PopupMenuItem(value: 'edit', child: Text('Editar')),
-                          const PopupMenuItem(value: 'delete', child: Text('Eliminar')),
-                          const PopupMenuItem(value: 'copy', child: Text('Copiar')),
-                        ],
+                        itemBuilder:
+                            (_) => [
+                              const PopupMenuItem(
+                                value: 'edit',
+                                child: Text('Editar'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'delete',
+                                child: Text('Eliminar'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'copy',
+                                child: Text('Copiar'),
+                              ),
+                            ],
                         constraints: const BoxConstraints(minWidth: 50),
                       ),
                     ],
@@ -344,10 +502,7 @@ class _MealCard extends StatelessWidget {
                   // const SizedBox(height: 2),
                   Text(
                     'Cena · Hoy 17:26',
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 12,
-                    ),
+                    style: TextStyle(color: Colors.grey[600], fontSize: 12),
                   ),
                   // const Spacer(),
                   Row(
@@ -435,4 +590,61 @@ class _CircleInfo extends StatelessWidget {
       ],
     );
   }
+}
+
+class CornerLPainter extends CustomPainter {
+  final double strokeWidth;
+  final Color color;
+  CornerLPainter({required this.strokeWidth, required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint =
+        Paint()
+          ..color = color
+          ..strokeWidth = strokeWidth
+          ..style = PaintingStyle.stroke
+          ..strokeJoin =
+              StrokeJoin
+                  .bevel // ¡IMPORTANTE para quitar el pico!
+          ..strokeCap = StrokeCap.butt; // cortes cuadrados
+
+    final double inset = 4 + strokeWidth / 2; // separación icono ↔ L
+    final double len = 12; // longitud de cada brazo
+
+    // ┌ Superior-izquierda ┐
+    Path tl =
+        Path()
+          ..moveTo(inset, inset + len)
+          ..lineTo(inset, inset)
+          ..lineTo(inset + len, inset);
+    canvas.drawPath(tl, paint);
+
+    // ┐ Superior-derecha ┌
+    Path tr =
+        Path()
+          ..moveTo(size.width - inset - len, inset)
+          ..lineTo(size.width - inset, inset)
+          ..lineTo(size.width - inset, inset + len);
+    canvas.drawPath(tr, paint);
+
+    // └ Inferior-izquierda ┘
+    Path bl =
+        Path()
+          ..moveTo(inset, size.height - inset - len)
+          ..lineTo(inset, size.height - inset)
+          ..lineTo(inset + len, size.height - inset);
+    canvas.drawPath(bl, paint);
+
+    // ┘ Inferior-derecha └
+    Path br =
+        Path()
+          ..moveTo(size.width - inset - len, size.height - inset)
+          ..lineTo(size.width - inset, size.height - inset)
+          ..lineTo(size.width - inset, size.height - inset - len);
+    canvas.drawPath(br, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter old) => false;
 }
