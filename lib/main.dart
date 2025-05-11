@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'screens/splash.dart';
+import '../widgets/no_glow_scroll_behavior.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'FoodLens',
       debugShowCheckedModeBanner: false,
+      scrollBehavior: NoGlowScrollBehavior(),
       home: const SplashScreen(),
     );
   }
