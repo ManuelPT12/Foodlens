@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'diary.dart';
 import 'dietist.dart';
 import 'what_to_eat.dart';
-
+import 'calendar_slider.dart';
+import '../widgets/no_glow_scroll_behavior.dart';
 
 class HomeScreen extends StatefulWidget {
   final String userName;
@@ -70,6 +70,9 @@ class _HomeScreenState extends State<HomeScreen>
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
+        shadowColor: const Color(0xFFFCF6EC),
+        surfaceTintColor: const Color(0xFFFCF6EC),
+        foregroundColor: const Color(0xFFFCF6EC),
         backgroundColor: const Color(0xFFFCF6EC),
         elevation: 0,
         title: Row(
@@ -105,7 +108,12 @@ class _HomeScreenState extends State<HomeScreen>
             shiftWindow: _shiftWindow,
           ),
           const WhatToEatPage(),
-          const DiaryPage(),
+          DiaryPage(
+            days: _days,
+            selectedDayIndex: _selectedDayIndex,
+            onSelectDay: (idx) => setState(() => _selectedDayIndex = idx),
+            shiftWindow: _shiftWindow,
+          ),
           const DietistPage(),
         ],
       ),
@@ -173,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen>
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 0),
           child: Row(
-            children: [ 
+            children: [
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -202,9 +210,10 @@ class _HomeScreenState extends State<HomeScreen>
     final color = selected ? activeColor : inactiveColor;
 
     return GestureDetector(
-      onTap: () => setState(() {
-        _currentIndex = index;
-      }),
+      onTap:
+          () => setState(() {
+            _currentIndex = index;
+          }),
       behavior: HitTestBehavior.opaque,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -241,6 +250,7 @@ class HomePageContent extends StatelessWidget {
   final int selectedDayIndex;
   final ValueChanged<int> onSelectDay;
   final void Function(int) shiftWindow;
+
   const HomePageContent({
     Key? key,
     required this.days,
@@ -251,181 +261,108 @@ class HomePageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedDate = days[selectedDayIndex];
-    final monthLabel = DateFormat.yMMMM('es').format(selectedDate);
-
-    return Padding(
-      padding: const EdgeInsets.all(2),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Month label
-          Center(
-            child: Text(
-              monthLabel,
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
-            ),
-          ),
-          // Days slider row
-          Row(
+    return ScrollConfiguration(
+      behavior: NoGlowScrollBehavior(),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(2),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back, color: Color(0xFF0F3C33)),
-                onPressed: () => shiftWindow(-1),
+              const SizedBox(height: 12),
+              // Calendario deslizante
+              CalendarSlider(
+                days: days,
+                selectedIndex: selectedDayIndex,
+                onSelect: onSelectDay,
+                onPrev: () => shiftWindow(-1),
+                onNext: () => shiftWindow(1),
               ),
-              Expanded(
-                child: SizedBox(
-                  height: 40,
+              const SizedBox(height: 8),
+              // Alimentos registrados con padding horizontal
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Alimentos registrados',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF0F3C33),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.arrow_forward,
+                        color: Color(0xFF0F3C33),
+                      ),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 100,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: days.length,
-                    // separatorBuilder: (_, __) => const SizedBox(width: 2),
-                    itemBuilder: (context, idx) {
-                      final day = days[idx];
-                      final isSelected = idx == selectedDayIndex;
-                      final weekday = DateFormat.E('es').format(day);
-                      // Disable future days beyond today + 2
-                      final tooFuture = day.isAfter(
-                        DateTime.now().add(const Duration(days: 0)),
-                      );
-                      return GestureDetector(
-                        onTap: tooFuture ? null : () => onSelectDay(idx),
-                        child: Container(
-                          width: 40,
-                          margin: const EdgeInsets.symmetric(horizontal: 2),
-                          decoration: BoxDecoration(
-                            color:
-                                isSelected
-                                    ? const Color(0xFFF68D2E)
-                                    : Colors.white,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Opacity(
-                            opacity: tooFuture ? 0.4 : 1.0,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  weekday,
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color:
-                                        isSelected
-                                            ? Colors.white
-                                            : const Color(0xFF0F3C33),
-                                  ),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  '${day.day}',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color:
-                                        isSelected
-                                            ? Colors.white
-                                            : const Color(0xFF0F3C33),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                    itemCount: 3,
+                    itemBuilder: (ctx, i) => const _MealCard(),
                   ),
                 ),
               ),
-              IconButton(
-                icon: const Icon(Icons.arrow_forward, color: Color(0xFF0F3C33)),
-                onPressed: days.last.isBefore(DateTime.now().add(const Duration(days: 2))) ? () => shiftWindow(1) : null,
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          const SizedBox(height: 16),
-          // Alimentos registrados con padding horizontal
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Alimentos registrados',
+              const SizedBox(height: 24),
+              // Resumen de Nutrientes con padding
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: const Text(
+                  'Resumen de Nutrientes',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF0F3C33),
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.arrow_forward,
-                    color: Color(0xFF0F3C33),
-                  ),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 8),
-          SizedBox(
-            height: 100,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 3,
-                itemBuilder: (ctx, i) => const _MealCard(),
               ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          // Resumen de Nutrientes con padding
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: const Text(
-              'Resumen de Nutrientes',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF0F3C33),
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: const [
+                    _CircleInfo(
+                      label: 'Calorías',
+                      value: 586,
+                      unit: '2019',
+                      color: Color(0xFFE94B35),
+                    ),
+                    _CircleInfo(
+                      label: 'Proteína',
+                      value: 37,
+                      unit: '151',
+                      color: Color(0xFF0F3C33),
+                    ),
+                    _CircleInfo(
+                      label: 'Grasa',
+                      value: 31,
+                      unit: '67',
+                      color: Color(0xFFF68D2E),
+                    ),
+                    _CircleInfo(
+                      label: 'Carbohidr',
+                      value: 40,
+                      unit: '201',
+                      color: Color(0xFF4DB879),
+                    ),
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
-          const SizedBox(height: 12),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                _CircleInfo(
-                  label: 'Calorías',
-                  value: 586,
-                  unit: '2019',
-                  color: Color(0xFFE94B35),
-                ),
-                _CircleInfo(
-                  label: 'Proteína',
-                  value: 37,
-                  unit: '151',
-                  color: Color(0xFF0F3C33),
-                ),
-                _CircleInfo(
-                  label: 'Grasa',
-                  value: 31,
-                  unit: '67',
-                  color: Color(0xFFF68D2E),
-                ),
-                _CircleInfo(
-                  label: 'Carbohidr',
-                  value: 40,
-                  unit: '201',
-                  color: Color(0xFF4DB879),
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -440,7 +377,7 @@ class _MealCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Container(
         width: 250,
-        padding: const EdgeInsets.only(left: 4, right: 0, top: 2, bottom: 2),
+        padding: const EdgeInsets.only(left: 4, right: 0, top: 0, bottom: 2),
         child: Row(
           children: [
             ClipRRect(
