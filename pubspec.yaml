@@ -41,6 +41,7 @@ dependencies:
   flutter_secure_storage: ^9.0.0    # para almacenar tokens de forma segura
   path_provider: ^2.1.1             # para guardar imágenes o archivos temporalmente
   intl: ^0.18.1                     # para manejar fechas, etc.
+  permission_handler: ^10.4.0       # para manejar permisos
 
 dev_dependencies:
   flutter_test:
