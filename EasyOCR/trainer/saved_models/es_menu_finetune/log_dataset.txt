@@ -1,0 +1,335 @@
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: es_menu_train
+opt.batch_ratio: 1
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: es_menu_train
+opt.batch_ratio: 1
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 387
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 387
+num total samples of es_menu_train: 387 x 1.0 (total_data_usage_ratio) = 387
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset/es_menu_val	 dataset: /
+sub-directory:	/.	 num samples: 110
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset/es_menu_val	 dataset: /
+sub-directory:	/.	 num samples: 110
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset/es_menu_val	 dataset: /
+sub-directory:	/.	 num samples: 110
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset/es_menu_val	 dataset: /
+sub-directory:	/.	 num samples: 41
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset/es_menu_val	 dataset: /
+sub-directory:	/.	 num samples: 41
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset/es_menu_val	 dataset: /
+sub-directory:	/.	 num samples: 41
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset/es_menu_val	 dataset: /
+sub-directory:	/.	 num samples: 41
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset/es_menu_val	 dataset: /
+sub-directory:	/.	 num samples: 41
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset/es_menu_val	 dataset: /
+sub-directory:	/.	 num samples: 41
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset/es_menu_val	 dataset: /
+sub-directory:	/.	 num samples: 41
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset/es_menu_val	 dataset: /
+sub-directory:	/.	 num samples: 41
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset/es_menu_val	 dataset: /
+sub-directory:	/.	 num samples: 41
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+dataset_root:    ../../dataset/es_menu_val	 dataset: /
+sub-directory:	/.	 num samples: 41
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset/es_menu_val	 dataset: /
+sub-directory:	/.	 num samples: 41
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+dataset_root: ../../dataset
+opt.select_data: ['es_menu_train']
+opt.batch_ratio: ['1']
+--------------------------------------------------------------------------------
+dataset_root:    ../../dataset	 dataset: es_menu_train
+sub-directory:	/es_menu_train	 num samples: 361
+num total samples of es_menu_train: 361 x 1.0 (total_data_usage_ratio) = 361
+num samples of es_menu_train per batch: 16 x 1.0 (batch_ratio) = 16
+--------------------------------------------------------------------------------
+Total_batch_size: 16 = 16
+--------------------------------------------------------------------------------
