@@ -1,0 +1,559 @@
+menu1.jpg	Pescado
+menu1.jpg	Boquerones 12 €
+menu1.jpg	12€ media ración / 16 € ración entera
+menu1.jpg	Boqueroncillos 12 €
+menu1.jpg	12€ media ración / 16 € ración entera
+menu1.jpg	Nuestro plato estrella
+menu1.jpg	Surtido de Pescado 14 €
+menu1.jpg	14€ media ración / 20 € ración entera
+menu1.jpg	Salmonetes 14€
+menu1.jpg	14€ media ración / 18 € ración entera
+menu1.jpg	Rosada 12€
+menu1.jpg	12€ media ración / 16 € ración entera
+menu1.jpg	Cazón 12€
+menu1.jpg	12€ media ración / 16 € ración entera
+menu1.jpg	Pijotas 14€
+menu1.jpg	14€ media ración / 18 € ración entera
+menu1.jpg	Atún Plancha 18 €
+menu1.jpg	18€ ración entera
+menu1.jpg	Plata 11 €
+menu1.jpg	11€ media ración / 16 € ración entera
+menu1.jpg	Bacalao 11 €
+menu1.jpg	Marisco
+menu1.jpg	Marisco de Motril 22 €
+menu1.jpg	22€ ración entera
+menu1.jpg	Cigalas 16 €
+menu1.jpg	16€ media ración / 22 € ración entera
+menu1.jpg	Mejillones 11 €
+menu1.jpg	11€ media ración / 15 € ración entera
+menu1.jpg	Almejas 12 €
+menu1.jpg	12€ media ración / 17 € ración entera
+menu1.jpg	Pulpo 14€
+menu1.jpg	14€ media ración / 20 € ración entera
+menu1.jpg	Navajas 12 €
+menu1.jpg	12€ media ración / 17 € ración entera
+menu1.jpg	Chipirones fritos 14 €
+menu1.jpg	14€ media ración / 18 € ración entera
+menu1.jpg	Coquinas 14 €
+menu1.jpg	14€ media ración / 18 € ración entera
+menu1.jpg	Chopitos 14 €
+menu1.jpg	14€ media ración / 18 € ración entera
+menu1.jpg	Calamaritos plancha 17 €
+menu1.jpg	17 € ración entera
+menu2.jpg	Platos Individuales
+menu2.jpg	Fritura de Pescado 15,00 €
+menu2.jpg	Parrillada de Pescado 16,00 €
+menu2.jpg	Zarzuela Pescado y Marisco 14,00 €/pers.
+menu2.jpg	Calamar Nacional a la Plancha 17,00 €
+menu2.jpg	Salmón Noruego a la Plancha 14,00 €
+menu2.jpg	Lubina a la Espalda 16,00 €
+menu2.jpg	Bacalao con Pisto 13,00 €
+menu2.jpg	Migas con Pescado y Pimientos Fritos 10,00 €
+menu2.jpg	CARNES
+menu2.jpg	Lomo de Cerdo a la Plancha 9,00 €
+menu2.jpg	Escalopines de Pollo Crujientes 10,00 €
+menu2.jpg	Burguer de Ternera con Queso de Cabra, Cebolla Caramelizada y Espinacas 11,00 €
+menu2.jpg	Entrecot de Ternera 17,00 €
+menu2.jpg	Huevos Rotos con Jamón 10,00 €
+menu2.jpg	Pan / Bread 0,80 €
+menu2.jpg	IVA INCLUIDO / IVA INCLUDED
+menu3.jpg	PLATOS PREMIUM 5 €
+menu3.jpg	HUEVOS ROTOS CON JAMÓN PREMIUM
+menu3.jpg	EL ENSAYAO
+menu3.jpg	PATATAS REJILLA PREMIUM CON SALSA BODE Y SALSA BRAVA
+menu3.jpg	MILANESA AL PLATO CON PATATAS CRUJIENTES PREMIUM
+menu3.jpg	AROS DE CEBOLLA REBOZADOS
+menu3.jpg	RACIONES
+menu3.jpg	Fritura de Pescado 12€ 7 €
+menu3.jpg	Rejos 12 € 7 €
+menu3.jpg	Puntas de Calamar 12 € 7 €
+menu3.jpg	Calamares a la Romana 12 € 7 €
+menu3.jpg	Bacalao Frito 12 € 7 €
+menu3.jpg	Bacalao Campesina 12€ 7€
+menu3.jpg	Langostinos 12 € 7 €
+menu3.jpg	Gambas Rebozadas 12 € 7 €
+menu3.jpg	Pulpo a la Gallega 12 € 7 €
+menu3.jpg	Muslitos de Cangrejo 12 € 7 €
+menu3.jpg	Chanquetes 10 € 6 €
+menu3.jpg	Alitas de Pollo 10 € 6 €
+menu3.jpg	Carne con Tomate 10 € 6 €
+menu3.jpg	Queso Frito 10 € 6 €
+menu3.jpg	Croquetas de Jamón 10 € 6 €
+menu3.jpg	Fingers de pollo con BBQ 12 € 7 €
+menu3.jpg	BOCADILLOS
+menu3.jpg	Lomo Completo 3,5€
+menu3.jpg	Lomo Mahonesa o Alioli 3 €
+menu3.jpg	Magreta Mahonesa o Alioli 3 €
+menu3.jpg	Beicon Mahonesa o Alioli 3 €
+menu3.jpg	Perrito 3€
+menu3.jpg	Calamares con Mahonesa 3 €
+menu3.jpg	Milanesa 3,5 €
+menu3.jpg	Lomo Serrano 3 €
+menu3.jpg	Carne en salsa 3 €
+menu3.jpg	Lomo con Queso 3 €
+menu3.jpg	TOSTAS 3 €
+menu3.jpg	Jamón Serrano con Brie
+menu3.jpg	Lomo con Queso Brie
+menu3.jpg	La Tahona
+menu3.jpg	Tosta de Atún
+menu3.jpg	Tosta Barbacoa
+menu3.jpg	Tosta de Champiñón
+menu3.jpg	Tosta 3 quesos
+menu3.jpg	TAPAS DE CARNE EN PLATO
+menu3.jpg	Pinchito
+menu3.jpg	Croquetas
+menu3.jpg	Alitas
+menu3.jpg	Chacinas
+menu3.jpg	Embutidos Ibéricos
+menu3.jpg	Callos
+menu3.jpg	Jamón Serrano con Queso Manchego
+menu3.jpg	Huevo de Codorniz con Lomo
+menu3.jpg	Montadito de Serrano a la Plancha
+menu3.jpg	Montadito de Lomo con Queso Brie
+menu3.jpg	Nuggets de Pollo
+menu3.jpg	Fingers de Pollo con BBQ
+menu3.jpg	TAPAS VEGETALES
+menu3.jpg	Queso de Cabra
+menu3.jpg	Queso Frito
+menu3.jpg	Patatas de Luxe
+menu3.jpg	Berenjenas Miel
+menu3.jpg	Huevo con Patatas
+menu3.jpg	Pizza
+menu3.jpg	Bocadillo de Tortilla
+menu3.jpg	Francesa con Queso
+menu3.jpg	TAPAS DE PESCADO
+menu3.jpg	Puntas de Calamar
+menu3.jpg	Bacalao Frito
+menu3.jpg	Bacalao Campesina
+menu3.jpg	Pulpo a la Gallega
+menu3.jpg	Langostinos Plancha
+menu3.jpg	Gambas Rebozadas
+menu3.jpg	Calamares a la Romana
+menu3.jpg	Muslitos de Cangrejo
+menu3.jpg	PANINIS
+menu3.jpg	Panini de Serrano
+menu3.jpg	Panini 3 Quesos
+menu3.jpg	Panini Barbacoa
+menu3.jpg	Panini Atún
+menu3.jpg	Panini de Champiñones
+menu3.jpg	Panini de Beicon
+menu3.jpg	TAPAS ESPECIALES
+menu3.jpg	Hamburguesa Completa y Patatas Fritas
+menu3.jpg	Alpujarreño
+menu3.jpg	Carne en Salsa con Patatas Fritas
+menu3.jpg	Alitas de Pollo con Patatas Fritas y Huevo
+menu3.jpg	Lomo Serrano con Beicon y Queso
+menu3.jpg	Huevo con Patatas Fritas y Croquetas
+menu3.jpg	Fingers con Patatas Fritas, Huevo y BBQ
+menu4.jpg	TAPAS CALIENTES
+menu4.jpg	Sandwich
+menu4.jpg	Pizza
+menu4.jpg	Pincho Moruno
+menu4.jpg	Morcilla
+menu4.jpg	Lomo - alioli
+menu4.jpg	Lomo - mayonesa
+menu4.jpg	Bacon - mayonesa
+menu4.jpg	Panceta - alioli
+menu4.jpg	Panceta - picante
+menu4.jpg	Tortilla de jamón
+menu4.jpg	Tortilla de atún
+menu4.jpg	Hamburguesa
+menu4.jpg	Perrito
+menu4.jpg	Huevo de codorniz
+menu4.jpg	Longaniza
+menu4.jpg	Lomo - roquefort
+menu4.jpg	Bacon - queso
+menu4.jpg	Bacon con huevo
+menu4.jpg	Panceta - queso
+menu4.jpg	Tortilla de patatas
+menu4.jpg	Tortilla de queso
+menu4.jpg	Champiñones
+menu4.jpg	Tapa extra 1,50€
+menu4.jpg	Tapa para llevar 1,80€
+menu4.jpg	TAPA DEL DÍA
+menu4.jpg	LUNES - Callos
+menu4.jpg	MARTES - Burritos
+menu4.jpg	MIERCOLES - Papas con huevo y chorizo
+menu4.jpg	JUEVES - Habas con jamón
+menu4.jpg	VIERNES - Huevos rotos con patatas y jamón
+menu4.jpg	TAPAS FRÍAS
+menu4.jpg	Jamón, tomate y aceite
+menu4.jpg	Jamón y queso
+menu4.jpg	Camembert - anchoas
+menu4.jpg	Requeté
+menu4.jpg	Atún, espárragos y mayonesa
+menu4.jpg	Alcachofas, mayonesa y anchoas
+menu4.jpg	Queso de cabra en aceite
+menu4.jpg	Salmón finas hierbas
+menu4.jpg	Salmón alioli
+menu4.jpg	Paté con camembert
+menu4.jpg	Aguacate palometa
+menu4.jpg	Aguacate anchoas
+menu4.jpg	Tomate con queso y anchoas
+menu4.jpg	Sobrasada y queso
+menu4.jpg	Atún con alcachofas
+menu4.jpg	Jamón - Roquefort
+menu4.jpg	Camembert - jamón
+menu4.jpg	Camembert - Salmón
+menu4.jpg	Atún - anchoas
+menu4.jpg	Mexicana
+menu4.jpg	Vegetal
+menu4.jpg	Tomate "aliñado"
+menu4.jpg	Salmón - roquefort
+menu4.jpg	Paté anchoas
+menu4.jpg	Paté serrano
+menu4.jpg	Aguacate con atún
+menu4.jpg	Aguacate con queso
+menu4.jpg	Aguacate con camembert
+menu4.jpg	Serrano con anchoas
+menu4.jpg	Roquefort con anchoas
+menu5.jpg	Tapas
+menu5.jpg	Carne en salsa
+menu5.jpg	Lomo plancha
+menu5.jpg	Pollo plancha
+menu5.jpg	Hamburguesa casera
+menu5.jpg	Ternera plancha
+menu5.jpg	Bacon con queso
+menu5.jpg	Jamón asado
+menu5.jpg	Chorizo
+menu5.jpg	Morcilla
+menu5.jpg	Sandwich vegetal
+menu5.jpg	Sandwich mixto
+menu5.jpg	Jamón serrano
+menu5.jpg	Caracoles
+menu5.jpg	Cordero en salsa
+menu5.jpg	Callos
+menu5.jpg	Alpujarreño
+menu5.jpg	Ensaladilla rusa
+menu5.jpg	Tocino salado
+menu5.jpg	Patatas bravas
+menu5.jpg	Champiñón plancha
+menu5.jpg	Papa asada (solo noche)
+menu5.jpg	Tortilla de patatas
+menu5.jpg	Queso curado
+menu5.jpg	Panini
+menu5.jpg	Brocheta de pollo
+menu5.jpg	Brocheta cortijera
+menu5.jpg	Pincho moruno
+menu5.jpg	Mejillones al vapor
+menu5.jpg	Chanquetes
+menu5.jpg	Boquerones fritos
+menu5.jpg	Boquerones en vinagre
+menu5.jpg	Atún con tomate
+menu5.jpg	Cazón
+menu5.jpg	Rejos
+menu5.jpg	Boquerones
+menu5.jpg	Calamares
+menu5.jpg	Requeté
+menu5.jpg	Anchoas
+menu5.jpg	Salmorejo (otros formatos)
+menu5.jpg	JARRA 1/2 LITRO 2,50€
+menu5.jpg	JARRA 1/2 LITRO + 1 TAPA 3€
+menu5.jpg	TAPA EXTRA 1,50€
+menu5.jpg	Especial Fin de Semana
+menu5.jpg	Sábados MIGAS
+menu5.jpg	Domingos ARROZ
+menu6.jpg	La Maestranza
+menu6.jpg	Tapa al plato
+menu6.jpg	Jamón Serrano
+menu6.jpg	Queso
+menu6.jpg	Requeté
+menu6.jpg	Boquerones
+menu6.jpg	Calamares
+menu6.jpg	Cazón
+menu6.jpg	Bacalao frito
+menu6.jpg	Tortita de camarones
+menu6.jpg	Bravas
+menu6.jpg	Tortilla española
+menu6.jpg	Berenjenas con miel
+menu6.jpg	Alitas a la miel
+menu6.jpg	Croquetas
+menu6.jpg	Champiñones
+menu6.jpg	Fingers de york y queso
+menu6.jpg	Pincho moruno
+menu6.jpg	Paladar asado (solo noche)
+menu6.jpg	Salmorejo en temporada
+menu6.jpg	Joselito
+menu6.jpg	Tapa en bocadillo
+menu6.jpg	Hamburguesa
+menu6.jpg	Jamón asado
+menu6.jpg	Carne en salsa
+menu6.jpg	Lomo
+menu6.jpg	Lomo y queso
+menu6.jpg	Lomo roquefort
+menu6.jpg	Serranito
+menu6.jpg	Perrito
+menu6.jpg	Bacon y queso
+menu6.jpg	Sándwich (york y queso)
+menu6.jpg	Burrito carne (con o sin picante)
+menu6.jpg	Burrito vegetal
+menu6.jpg	Burrito pescado
+menu6.jpg	Chorizo
+menu6.jpg	Morcilla
+menu6.jpg	Para picotear
+menu6.jpg	Jamón serrano y queso 10
+menu6.jpg	Ensalada Maestranza 9
+menu6.jpg	Tomate con conserva de caballa 7
+menu6.jpg	Berenjenas con miel 7
+menu6.jpg	Revuelto de setas con gambas 9
+menu6.jpg	Huevos rotos con chanquetes 9
+menu6.jpg	Huevos rotos con jamón y gulas 9
+menu6.jpg	Bravas 7
+menu6.jpg	Habas con jamón y huevo 9
+menu6.jpg	Pescados
+menu6.jpg	Boquerones 9
+menu6.jpg	Calamares 9
+menu6.jpg	Cazón 9
+menu6.jpg	Lomos de bacalao (6 uds.) 12
+menu6.jpg	Croquetas de bacalao 9
+menu6.jpg	Sepia a la plancha con pesto 10
+menu6.jpg	Gambas pil-pil 11
+menu6.jpg	Paté pulpo Maestranza (300-350 g) 14
+menu6.jpg	Fritura variada 17
+menu6.jpg	Carnes de la casa
+menu6.jpg	Jamón asado Maestranza 9
+menu6.jpg	Carne en salsa 9
+menu6.jpg	Lomo con alioli 9
+menu6.jpg	Secreto 12
+menu6.jpg	Solomillo de pollo roquefort 14
+menu6.jpg	Katxopo de pollo (250 g) 11
+menu6.jpg	Katxopo de ternera (500 g) 15
+menu6.jpg	Costillas de cerdo barbacoa 12
+menu6.jpg	Carrillera al P.X. 14
+menu6.jpg	Codillo estilo andaluz 14
+menu6.jpg	Flamenquín lomo, serrano y queso 12
+menu6.jpg	Croquetas de rabo de toro 10
+menu6.jpg	Rabo de toro estofado 14
+menu6.jpg	Cordero de Orce 14
+menu6.jpg	Tapa Extra : 1.70
+menu6.jpg	Máximo 2 variedades por grupo
+menu6.jpg	Platos combinados al gusto
+menu6.jpg	Botella de vino a elegir más Ración (20)
+menu7.jpg	ENSALADA DE REMOLACHA Y GRANADA / BEETROOT AND POMEGRANATE SALAD 9.00 €
+menu7.jpg	- Remolacha, granada, cilantro, melaza de granada, aceite de oliva y zumo de limón
+menu7.jpg	- Beets, pomegranate, coriander, pomegranate molasses, olive oil and lemon juice
+menu7.jpg	ENSALADA GRIEGA / GREEK SALAD 9.00 €
+menu7.jpg	- Queso feta, tomate, pepino, cebolla roja, aceitunas Kalamata y aceite de oliva
+menu7.jpg	- Feta cheese, tomato, cucumber, red onion, Kalamata olives and olive oil
+menu7.jpg	ENTRANTES CALIENTES / HOT STARTERS
+menu7.jpg	KIBBEH FRITA 3 piezas / FRIED KIBBEH 3 pieces 9.00 €
+menu7.jpg	- Croquetas de trigo rellenas de carne picada especiada, cebolla y nueces
+menu7.jpg	- Wheat croquettes stuffed with spicy minced meat, onion and walnuts
+menu7.jpg	BÖREKS DE QUESO, ESPINACAS O CARNE 3 piezas / CHEESE, SPINACH OR MEAT BOOREKAS 3 pieces 9.00 €
+menu7.jpg	- Pastel de hojaldre relleno de queso fresco, espinacas o carne, al horno
+menu7.jpg	- Puff pastry cake filled with fresh cheese, spinach or meat, baked
+menu7.jpg	ALITAS DE POLLO CON CILANTRO Y AJO / CORIANDER GARLIC CHICKEN WINGS 10.00 €
+menu7.jpg	- Alitas de pollo fritas con ajo, cilantro, picante casero y aceite de oliva
+menu7.jpg	- Fried chicken wings with garlic, coriander, homemade spicy and olive oil
+menu7.jpg	PATATAS PICANTES / SPICY POTATOES 7.50 €
+menu7.jpg	- Patatas caseras con ajo, cilantro, picante y aceite de oliva
+menu7.jpg	- Homemade potatoes with garlic, coriander, spicy and olive oil
+menu7.jpg	HUMMUS CON CARNE / HUMMUS WITH MEAT 8.50 €
+menu7.jpg	- Crema de garbanzos con pasta de sésamo y zumo de limón, cubierto con carne desmenuzada
+menu7.jpg	- Chickpeas cream with sesame paste and lemon juice, topped with minced meat
+menu7.jpg	PATATAS FRITAS / FRENCH FRIES 5.50 €
+menu7.jpg	PATATAS GAJO / POTATO WEDGES 6.00 €
+menu7.jpg	FALAFEL 5 p / 5 pieces 7.50 €
+menu7.jpg	- Croquetas vegetales fritas de garbanzos, ajo, cilantro y especias
+menu7.jpg	- Fried vegetable croquettes with chickpeas, garlic, coriander and spices
+menu7.jpg	PLATO COMBINADO / COMBO PLATE 21.00 €
+menu7.jpg	- Hummus con tahine
+menu7.jpg	- Mutabal de berenjena
+menu7.jpg	- 2 piezas de falafel
+menu7.jpg	- 2 piezas de kibbeh frita
+menu7.jpg	- 3 hojas de parra
+menu7.jpg	- Ensalada
+menu7.jpg	- Hummus with tahine
+menu7.jpg	- Aubergine mutabal
+menu7.jpg	- 2 pieces of falafel
+menu7.jpg	- 2 pieces of fried kibbeh
+menu7.jpg	- 3 grape leaves
+menu7.jpg	- Salad
+menu8.jpg	Requeté (melva con morrones) 3,00 €
+menu8.jpg	Anchoas del Cantábrico 3,00 €
+menu8.jpg	Tentaciones de atún 3,50 €
+menu8.jpg	Trucha asalmonada con queso fresco 3,50 €
+menu8.jpg	Salmón con aguacates o queso fresco 3,50 €
+menu8.jpg	Palometa con huevos a caviar 3,00 €
+menu8.jpg	Lomo plancha con tomate o roquefort 3,00 €
+menu8.jpg	Beicón plancha con tomate o morrones 2,50 €
+menu8.jpg	Jamón Serrano con tomate 2,50 €
+menu8.jpg	Jamón Ibérico con tomate o roquefort 3,00 €
+menu8.jpg	Medallones sobrasada natural 2,50 €
+menu8.jpg	Jamón de pato 3,75 €
+menu8.jpg	Queso manchego curado 3,00 €
+menu8.jpg	Queso manchego curado en aceite 3,00 €
+menu8.jpg	Queso cabra (Curado) 3,00 €
+menu8.jpg	Queso roquefort con remolacha roja 3,00 €
+menu8.jpg	Queso chamois “D’OR” 3,00 €
+menu8.jpg	Queso Camembert 1,75 €
+menu8.jpg	Croquetas (unidad) 1,75 €
+menu8.jpg	Cuña Tortilla española 3,00 €
+menu8.jpg	Jamón Serrano 12,00 € 9,00 €
+menu8.jpg	Serrano ham
+menu8.jpg	Jamón de bellota 15,00 € 12,00 €
+menu8.jpg	Acorn-fed Iberico ham
+menu8.jpg	Jamón y embutidos ibéricos 15,00 € 12,00 €
+menu8.jpg	Iberico ham and sausages
+menu8.jpg	Jamón de pato 15,00 € 12,00 €
+menu8.jpg	Cured duck breast
+menu8.jpg	Queso manchego curado 12,00 € 9,00 €
+menu8.jpg	Manchego cheese cured
+menu8.jpg	Queso manchego curado en aceite 12,00 € 9,00 €
+menu8.jpg	Manchego cheese cured in olive oil
+menu8.jpg	Queso cabra “Curado” 12,00 € 9,00 €
+menu8.jpg	Goat cheese
+menu8.jpg	Queso roquefort con remolacha roja 12,00 € 9,00 €
+menu8.jpg	Roquefort with beets
+menu8.jpg	Queso “DOR” 12,00 € 9,00 €
+menu8.jpg	Chamois “D’OR” Cheese
+menu8.jpg	Camembert Cheese 12,00 € 9,00 €
+menu8.jpg	Camembert Cheese
+menu8.jpg	Croquetas (unidad) 1,75 €
+menu8.jpg	Croquettes
+menu8.jpg	Tortilla española (porción) 3,00 €
+menu8.jpg	Spanish omelette wedge
+menu8.jpg	Combinada GRAN TABERNA 17,00 € 12,00 €
+menu8.jpg	Gran Taberna combination
+menu8.jpg	Combinada patés 12,00 € 9,00 €
+menu8.jpg	Pâté combination
+menu8.jpg	Combinada patés y embutidos 13,00 € 10,00 €
+menu8.jpg	Pâté and sausage combination
+menu8.jpg	Combinada quesos y paté 13,00 € 10,00 €
+menu8.jpg	Cheese and pâté combination
+menu8.jpg	Combinada de embutidos y salazones 13,00 € 10,00 €
+menu8.jpg	Sausage and dried fish combo
+menu8.jpg	Combinada quesos y montaditos “TAPAS” 18,00 € 13,00 €
+menu8.jpg	Assorted appetizers
+menu8.jpg	Brocheta de Solomillo 12 €
+menu8.jpg	Brocheta de Ave 12 €
+menu8.jpg	Confit de Pato 14 €
+menu8.jpg	Fondue Quesos (2 personas) 14 €
+menu8.jpg	Medallones de Solomillo (Taberna) 12 €
+menu8.jpg	Habas con jamón (Taberna) 9 €
+menu8.jpg	Revuelto “Varios” 9 €
+menu8.jpg	Pisto casero (cazuela) 10 €
+menu8.jpg	Callos caseros (cazuela) 10 €
+menu8.jpg	Lomo de orza 13 €
+menu8.jpg	Pulpo a la Feira 14 €
+menu8.jpg	Cogollitos con frutos secos 10 €
+menu8.jpg	Tomate aliñado 8 €
+menu8.jpg	Espárragos trigueros 8 €
+menu8.jpg	Palmitos con aguacates 10 €
+menu8.jpg	Ensalada de la casa (2 personas) 10 €
+menu8.jpg	Gazpacho (en temporada) 5 €
+menu9.jpg	ENTRANTES
+menu9.jpg	Croquetas crujientes de jamón con mayonesa demiglace. 14,30
+menu9.jpg	Crunchy ham croquettes with demiglace mayonnaise.
+menu9.jpg	NUEVO. Croquetas crujientes de jamón con mayonesa demiglace. 14,50
+menu9.jpg	Carbonara croquettes on a bed of Portobello mushroom stew.
+menu9.jpg	NUEVO. Falafel con cous cous. Ensalada árabe y salsa de yogurt con mostaza. 14,50
+menu9.jpg	Falafel with cous cous. Arab salad with yoghurt and mustard sauce.
+menu9.jpg	NUEVO. Gyozas fritas de pollo y verduras con mayonesa de alga wakame. 15,50
+menu9.jpg	Chicken and Vegetable Fried Gyozas with wakame mayo.
+menu9.jpg	Pan Bao de langostinos en tempura con kimchinesa y shichimi togarashi. 12,20/2ud +6,10€/ud extra
+menu9.jpg	Bao bread with prawns in tempura with kimchi mayo and shichimi togarashi.
+menu9.jpg	Brioche de Steak tartar trufado, de vaca vieja con 45 días de maduración servido con piparras. 18,90
+menu9.jpg	Brioche of Steak tartar with 45 days of maturation, served with peppers.
+menu9.jpg	Aguacate braseado con tartar de atún en emulsión al estilo korea. 14,50. +7,3€/extra
+menu9.jpg	Braised avocado with tuna tartar in Korean-style emulsion.
+menu9.jpg	Tartar de chorizo ibérico con regañás de cristal de Don Pelayo. 14,50
+menu9.jpg	Tartar of Iberian chorizo with Don Pelayo's crystal regañás.
+menu10.jpg	Hummus / Homemade hummus 7,50
+menu10.jpg	Falafel / Chickpeas croquettes 7,50
+menu10.jpg	Ensalada de yogur y pepino / Cucumber yogurt salad 7,50
+menu10.jpg	Ensalada de berenjenas / Eggplant salad 8,00
+menu10.jpg	Ensalada marroquí / Moroccan salad 7,50
+menu10.jpg	Ensalada Variada / Mixed salad 7,50
+menu10.jpg	5 tipos: Hummus, yogur, berenjena, marroquí y falafel
+menu10.jpg	5 types: Hummus, yogurt, eggplant, moroccan and chickpeas croquettes
+menu10.jpg	Sopa harira de tomate / Tomato harira soup 7,50
+menu10.jpg	Sopa de lentejas / Moroccan lentil soup 7,50
+menu10.jpg	Crema de verduras / Vegetables cream 7,50
+menu10.jpg	Salmorejo / Spanish cold tomato cream 7,50
+menu10.jpg	Gazpacho 7,50
+menu10.jpg	Pastela de pollo con almendras, canela y huevo 19,50
+menu10.jpg	Chicken pastille with almonds, cinnamon and egg
+menu10.jpg	Pinchitos de pollo / Moorish chicken skewers 16,50
+menu10.jpg	Pinchitos de cordero / Moorish lamb skewers 18,50
+menu10.jpg	Pinchito mixto, pollo, cordero y salchicha 17,50
+menu10.jpg	Mixed chicken, lamb and sausage skewers
+menu10.jpg	Filete de pollo con patatas fritas y ensalada 17,50
+menu10.jpg	Grilled chicken fillet with French fries and salad
+menu10.jpg	Chuletas de cordero con patatas fritas y ensalada 19,50
+menu10.jpg	Lamb chops with French fries and salad
+menu10.jpg	Chuletón de ternera con patatas fritas y ensalada 21,50
+menu10.jpg	T-bone steak with French fries and salad
+menu10.jpg	Arroz vegetal / Vegetable rice 13,50
+menu10.jpg	Arroz con pollo champiñones y nata 19,50
+menu10.jpg	Chicken rice with mushrooms and cream
+menu10.jpg	Arroz con pollo al curry con nata 19,50
+menu10.jpg	Chicken and curry rice with cream
+menu10.jpg	Cuscús con verduras / Moroccan vegetable couscous 17,50
+menu10.jpg	Cuscús de pollo con verduras 17,50
+menu10.jpg	Chicken couscous with vegetables
+menu10.jpg	Cuscús de pollo con cebolla caramelizada y pasas 17,50
+menu10.jpg	Chicken couscous with caramelized onion and raisins
+menu10.jpg	Cuscús de ternera con verdura 18,50
+menu10.jpg	Beef couscous with vegetables
+menu10.jpg	Cuscús de ternera con cebolla caramelizada y pasas 18,50
+menu10.jpg	Beef couscous with caramelized onion and raisins
+menu10.jpg	Cuscús de cordero con verdura 18,50
+menu10.jpg	Lamb couscous with vegetables
+menu10.jpg	Cuscús de cordero con cebolla caramelizada y pasas 20,00
+menu10.jpg	Lamb couscous with caramelized onion and raisins
+menu10.jpg	C
+menu10.jpg	Espagueti boloñesa / Bolognese spaghetti 15,50
+menu10.jpg	Espagueti de pollo gratinado con bechamel y queso 15,50
+menu10.jpg	Chicken spaghetti with béchamel and cheese
+menu10.jpg	Tajín vegetal / Vegetable tagine 17,50
+menu10.jpg	Tajín de albóndigas con salsa tomate 17,50
+menu10.jpg	Meatballs tagine with tomato sauce
+menu10.jpg	Tajín de pollo con verduras 17,50
+menu10.jpg	Chicken tagine with vegetables
+menu10.jpg	Tajín de pollo al limón y aceitunas 17,50
+menu10.jpg	Chicken tagine with lemon and olives
+menu10.jpg	Tajín de pollo con cebolla caramelizada y pasas 17,50
+menu10.jpg	Chicken tagine with caramelized onion and raisins
+menu10.jpg	Tajín de ternera con verduras 18,50
+menu10.jpg	Beef tagine with vegetables
+menu10.jpg	Tajín de ternera con cebolla caramelizada y pasas 18,50
+menu10.jpg	Beef tagine with caramelized onion and raisins
+menu10.jpg	Tajín de cordero con verduras 18,50
+menu10.jpg	Lamb tagine with vegetables
+menu10.jpg	Tajín de cordero con cebolla caramelizada y pasas 20,00
+menu10.jpg	Lamb tagine with caramelized onion and raisins
+menu10.jpg	Tajín de cordero con almendras y huevo cocido 20,00
+menu10.jpg	Lamb tagine with almonds and boiled egg
+menu10.jpg	Gambas al pil pil / Spanish garlic shrimps 19,50
+menu10.jpg	Dorada al horno con gambas 22,00
+menu10.jpg	Baked gilt-head bream with shrimps
+menu10.jpg	Pizza Margarita / Pizza Margherita 12,50
+menu10.jpg	Tomate, queso mozzarella, orégano
+menu10.jpg	Tomato, mozzarella cheese and oregano
+menu10.jpg	Pizza Funghi 13,50
+menu10.jpg	Tomate, queso y champiñones
+menu10.jpg	Tomato, cheese and mushrooms
+menu10.jpg	Pizza napolitana / Neapolitan pizza 13,50
+menu10.jpg	Tomate, mozzarella, tomate fresco, aceitunas y orégano
+menu10.jpg	Tomato, mozzarella, fresh tomato, olives and oregano
+menu10.jpg	Pizza Boloñesa / Pizza Bolognese 14,50
+menu10.jpg	Tomate, carne picada, mozzarella y orégano
+menu10.jpg	Tomato, minced meat, mozzarella and oregano
+menu10.jpg	Pizza de pollo / Chicken pizza 14,50
+menu10.jpg	Tomate, pollo, mozzarella y orégano
+menu10.jpg	Tomato, chicken, mozzarella and oregano
+menu10.jpg	Pizza Marinera / Sailor pizza 15,50
+menu10.jpg	Tomate, gambas, mejillones, palitos de mar, queso
+menu10.jpg	Tomato, prawns, mussels, crab sticks, cheese
+menu10.jpg	Ración de sémola / Semolina ration 2,50
+menu10.jpg	Ración de Arroz Blanco / White Rice ration 2,50
+menu10.jpg	Ración de Patatas Fritas / Serving French Fries 5,00
+menu10.jpg	Cerveza (sin) / Beer (without alcohol) 2,50
+menu10.jpg	Agua sin gas / Mineral water 2,50
+menu10.jpg	Agua con gas / Soda water 3,00
+menu10.jpg	Refrescos / Soft drinks 3,00
+menu10.jpg	Limonada / Lemonade 3,00
+menu10.jpg	Té marroquí / Moroccan tea 4,80
+menu10.jpg	Té helado / Iced tea 4,80
+menu10.jpg	Dulces árabes / Homemade Arabic sweets 2,00
