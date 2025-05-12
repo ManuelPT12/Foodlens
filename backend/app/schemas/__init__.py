@@ -1,1 +1,1 @@
-from .user_schema import UserCreate, UserOut, UserLogin
+from .users_schema import UserCreate, UserOut, UserLogin

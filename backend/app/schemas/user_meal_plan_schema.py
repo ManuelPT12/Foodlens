@@ -1,38 +1,35 @@
-# schemas/meal_log_schema.py
+# schemas/user_meal_plan_schema.py
 
 from pydantic import BaseModel
 from typing import Optional
-from datetime import datetime
+from datetime import date, datetime
 
-class MealLogBase(BaseModel):
+class UserMealPlanBase(BaseModel):
     user_id: int
-    meal_date: datetime
+    plan_date: date
     meal_type: int
-    dish_name: str
-    description: Optional[str] = None
+    dish_description: Optional[str] = None
     calories: Optional[int] = None
     protein: Optional[float] = None
     carbs: Optional[float] = None
     fat: Optional[float] = None
     image_url: Optional[str] = None
 
-class MealLogCreate(MealLogBase):
+class UserMealPlanCreate(UserMealPlanBase):
     """
-    Usado en POST /meal-logs para crear un nuevo registro de comida.
-    Todos los campos de MealLogBase son obligatorios salvo los Optional.
+    Usado en POST /user-meal-plans para crear un nuevo plan de comida.
     """
     pass
 
-class MealLogUpdate(BaseModel):
+class UserMealPlanUpdate(BaseModel):
     """
-    Usado en PUT /meal-logs/{id} para actualizar un registro.
+    Usado en PUT /user-meal-plans/{plan_id} para actualizar un plan.
     Todos los campos opcionales.
     """
     user_id: Optional[int] = None
-    meal_date: Optional[datetime] = None
+    plan_date: Optional[date] = None
     meal_type: Optional[int] = None
-    dish_name: Optional[str] = None
-    description: Optional[str] = None
+    dish_description: Optional[str] = None
     calories: Optional[int] = None
     protein: Optional[float] = None
     carbs: Optional[float] = None
@@ -42,9 +39,9 @@ class MealLogUpdate(BaseModel):
     class Config:
         orm_mode = True
 
-class MealLogOut(MealLogBase):
+class UserMealPlanOut(UserMealPlanBase):
     """
-    Respuesta para GET /meal-logs y GET /meal-logs/{id}.
+    Respuesta para GET /user-meal-plans y GET /user-meal-plans/{plan_id}.
     Incluye `id` y `created_at`.
     """
     id: int

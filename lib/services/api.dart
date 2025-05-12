@@ -6,22 +6,20 @@ class ApiService {
   final String baseUrl =
       'http://192.168.1.141:8000'; // Cambiar si uso físico/Wi-Fi
 
-  Future<bool> loginUser({
+  Future<int> loginUser({
     required String email,
     required String password,
   }) async {
-    final response = await http.post(
+    final resp = await http.post(
       Uri.parse('$baseUrl/login'),
-      headers: {'Content-Type': 'application/json'},
+      headers: {'Content-Type':'application/json'},
       body: jsonEncode({'email': email, 'password': password}),
     );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      print('User ID: ${data['user_id']}');
-      return true;
+    if (resp.statusCode == 200) {
+      final data = jsonDecode(resp.body);
+      return data['user_id'] as int;
     } else {
-      return false;
+      throw Exception('Invalid credentials');
     }
   }
 
@@ -67,6 +65,79 @@ class ApiService {
     } catch (e) {
       print('ERROR during request: $e');
       return false;
+    }
+  }
+
+  Future<List<User>> fetchUsers() async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/users'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      return data
+          .map((json) => User.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw Exception('Error al cargar usuarios: ${response.statusCode}');
+    }
+  }
+
+  Future<User> fetchUserById(int id) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/users/$id'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      // print(response.body);
+      return User.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Error al cargar usuario $id: ${response.statusCode}');
+    }
+  }
+
+  Future<User> updateUser({
+    required int id,
+    required String firstName,
+    required String lastName,
+    required DateTime birthDate,
+    required double weight,
+    required double height,
+    required int age,
+    required String gender,
+    required String goal,
+    required String dietType,
+    required String email,
+    required String password,
+    required String activityLevel,
+    required bool isDiabetic,
+  }) async {
+    final body = {
+      'first_name': firstName,
+      'last_name': lastName,
+      'birth_date': birthDate.toIso8601String(),
+      'weight': weight,
+      'height': height,
+      'age': age,
+      'gender': gender,
+      'goal': goal,
+      'diet_type': dietType,
+      'email': email,
+      'password': password,
+      'activity_level': activityLevel,
+      'is_diabetic': isDiabetic,
+    };
+
+    final response = await http.put(
+      Uri.parse('$baseUrl/users/$id'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode == 200) {
+      return User.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Error al actualizar usuario: ${response.statusCode}');
     }
   }
 
@@ -717,75 +788,4 @@ class ApiService {
     }
   }
 
-  Future<List<User>> fetchUsers() async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/users'),
-      headers: {'Content-Type': 'application/json'},
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      return data
-          .map((json) => User.fromJson(json as Map<String, dynamic>))
-          .toList();
-    } else {
-      throw Exception('Error al cargar usuarios: ${response.statusCode}');
-    }
-  }
-
-  Future<User> fetchUserById(int id) async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/users/$id'),
-      headers: {'Content-Type': 'application/json'},
-    );
-    if (response.statusCode == 200) {
-      return User.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Error al cargar usuario $id: ${response.statusCode}');
-    }
-  }
-
-  Future<User> updateUser({
-    required int id,
-    required String firstName,
-    required String lastName,
-    required DateTime birthDate,
-    required double weight,
-    required double height,
-    required int age,
-    required String gender,
-    required String goal,
-    required String dietType,
-    required String email,
-    required String password,
-    required String activityLevel,
-    required bool isDiabetic,
-  }) async {
-    final body = {
-      'first_name': firstName,
-      'last_name': lastName,
-      'birth_date': birthDate.toIso8601String(),
-      'weight': weight,
-      'height': height,
-      'age': age,
-      'gender': gender,
-      'goal': goal,
-      'diet_type': dietType,
-      'email': email,
-      'password': password,
-      'activity_level': activityLevel,
-      'is_diabetic': isDiabetic,
-    };
-
-    final response = await http.put(
-      Uri.parse('$baseUrl/users/$id'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(body),
-    );
-
-    if (response.statusCode == 200) {
-      return User.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Error al actualizar usuario: ${response.statusCode}');
-    }
-  }
 }
