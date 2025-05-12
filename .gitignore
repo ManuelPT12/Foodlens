@@ -43,8 +43,13 @@ ios/Runner.xcworkspace/
 **/.venv/
 
 # archivos de configuracion
-/assets/
+/assets/.env
 /backend/.env
+/linux/flutter/generated_plugin_registrant.cc
+/linux/flutter/generated_plugins.cmake
+/windows/flutter/generated_plugin_registrant.cc
+/windows/flutter/generated_plugins.cmake
+/macos/Flutter/GeneratedPluginRegistrant.swift
 
 # Symbolication related
 app.*.symbols
