@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'home.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,12 +15,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
-    });
+    Future.delayed(const Duration(seconds: 2), _checkLogin);
+  }
+
+  void _checkLogin() {
+    final auth = context.read<AuthProvider>();
+    if (auth.isLogged) {
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      Navigator.pushReplacementNamed(context, '/login');
+    }
   }
 
   @override

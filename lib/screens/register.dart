@@ -3,14 +3,14 @@ import '../services/api.dart';
 import 'login.dart';
 import 'package:intl/intl.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -106,7 +106,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         await Future.delayed(const Duration(seconds: 2));
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()),
+          MaterialPageRoute(builder: (context) => const LoginPage()),
         );
       } else {
         setState(() {
@@ -259,7 +259,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
+                        builder: (context) => const LoginPage(),
                       ),
                     );
                   },

@@ -1,61 +1,36 @@
 import 'package:flutter/material.dart';
-import '../services/api.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 import 'register.dart';
-import 'home.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isLoading = false;
   String? _errorMessage;
 
-  Future<void> _login() async {
+Future<void> _login() async {
     if (!_formKey.currentState!.validate()) return;
-
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
-
     try {
-      final response = await ApiService().loginUser(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-      );
-
-      if (response) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Login successful'),
-            backgroundColor: Color(0xFF50B878), // verde de éxito
-            duration: Duration(seconds: 2),
-          ),
-        );
-
-        await Future.delayed(const Duration(seconds: 2));
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => HomeScreen(userName: 'Sergio'),
-          ),
-        );
-      } else {
-        setState(() {
-          _errorMessage = 'Invalid credentials';
-        });
-      }
+      await context.read<AuthProvider>()
+          .login(_emailController.text.trim(), _passwordController.text);
+      Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
+      debugPrint('🛑 Login failed: $e');
       setState(() {
-        _errorMessage = 'Something went wrong';
+        _errorMessage = 'User or password incorrect';
       });
     } finally {
       setState(() {
@@ -175,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (c) => const RegisterScreen(),
+                                    builder: (c) => const RegisterPage(),
                                   ),
                                 );
                               },
