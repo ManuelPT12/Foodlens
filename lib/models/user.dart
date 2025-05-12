@@ -8,11 +8,13 @@ class User {
   final int age;
   final String gender;
   final String goal;
-  final String dietType;
   final String email;
-  final String password;
+  // Estos campos pueden no venir: hazlos opcionales
+  final String? dietType;
+  final String? activityLevel;
+  // Normalmente no devuelves la password al cliente, así que lo quitamos:
+  // final String password;
   final DateTime createdAt;
-  final String activityLevel;
   final bool isDiabetic;
 
   User({
@@ -25,11 +27,10 @@ class User {
     required this.age,
     required this.gender,
     required this.goal,
-    required this.dietType,
     required this.email,
-    required this.password,
+    this.dietType,
+    this.activityLevel,
     required this.createdAt,
-    required this.activityLevel,
     required this.isDiabetic,
   });
 
@@ -44,32 +45,12 @@ class User {
       age: json['age'] as int,
       gender: json['gender'] as String,
       goal: json['goal'] as String,
-      dietType: json['diet_type'] as String,
       email: json['email'] as String,
-      password: json['password'] as String,
+      // Usa cast nullable; si no existe la clave, será null
+      dietType: json['diet_type'] as String?,
+      activityLevel: json['activity_level'] as String?,
       createdAt: DateTime.parse(json['created_at'] as String),
-      activityLevel: json['activity_level'] as String,
       isDiabetic: json['is_diabetic'] as bool,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'first_name': firstName,
-      'last_name': lastName,
-      'birth_date': birthDate.toIso8601String(),
-      'weight': weight,
-      'height': height,
-      'age': age,
-      'gender': gender,
-      'goal': goal,
-      'diet_type': dietType,
-      'email': email,
-      'password': password,
-      // 'created_at' lo genera el servidor
-      'activity_level': activityLevel,
-      'is_diabetic': isDiabetic,
-    };
   }
 }
