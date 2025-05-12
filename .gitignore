@@ -42,6 +42,10 @@ ios/Runner.xcworkspace/
 **/venv/
 **/.venv/
 
+# archivos de configuracion
+/assets/
+/backend/.env
+
 # Symbolication related
 app.*.symbols
 

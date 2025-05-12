@@ -5,15 +5,15 @@ import 'what_to_eat.dart';
 import 'calendar_slider.dart';
 import '../widgets/no_glow_scroll_behavior.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomePage extends StatefulWidget {
   final String userName;
-  const HomeScreen({Key? key, this.userName = 'Sergio'}) : super(key: key);
+  const HomePage({Key? key, this.userName = 'Sergio'}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
+class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   // Índice de la pestaña activa
   int _currentIndex = 0;
@@ -118,61 +118,69 @@ class _HomeScreenState extends State<HomeScreen>
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: AnimatedBuilder(
-        animation: _pulseAnimation,
-        builder: (context, _) {
-          return Stack(
-            alignment: Alignment.center,
-            children: [
-              // 1) El pulso: tamaño fijo, sombra animada
-              Container(
-                width: 70,
-                height: 70,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFFF68D2E).withOpacity(0.5),
-                      blurRadius: _pulseAnimation.value,
-                      spreadRadius: _pulseAnimation.value,
-                    ),
-                  ],
-                ),
-              ),
-              // 2) El botón: tamaño a medida, sin afectar al pulso
-              SizedBox(
-                width: 75, // aquí defines el nuevo tamaño
-                height: 75,
-                child: FloatingActionButton(
-                  onPressed: () => Navigator.pushNamed(context, '/camera'),
-                  backgroundColor: const Color(0xFFF68D2E),
-                  elevation: 4,
-                  shape: const CircleBorder(),
-                  child: Stack(
+      floatingActionButton:
+          _currentIndex == 3
+              ? null
+              : AnimatedBuilder(
+                animation: _pulseAnimation,
+                builder: (context, _) {
+                  return Stack(
                     alignment: Alignment.center,
                     children: [
-                      // const Icon(
-                      //   Icons.crop_free_outlined,     // cuatro L apuntando hacia fuera
-                      //   size: 60,            // ajústalo para que encaje perfectamente
-                      //   color: Colors.white, // mismo color que el icono
-                      // ),
-                      CustomPaint(
-                        size: const Size(48, 48),
-                        painter: CornerLPainter(
-                          strokeWidth: 2, // aquí el grosor que quieras
-                          color: Colors.white,
+                      // 1) El pulso: tamaño fijo, sombra animada
+                      Container(
+                        width: 70,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFFF68D2E).withOpacity(0.5),
+                              blurRadius: _pulseAnimation.value,
+                              spreadRadius: _pulseAnimation.value,
+                            ),
+                          ],
                         ),
                       ),
-                      // Icono en el centro
-                      const Icon(Icons.fastfood, size: 32, color: Colors.white),
+                      // 2) El botón: tamaño a medida, sin afectar al pulso
+                      SizedBox(
+                        width: 75, // aquí defines el nuevo tamaño
+                        height: 75,
+                        child: FloatingActionButton(
+                          onPressed:
+                              () => Navigator.pushNamed(context, '/camera'),
+                          backgroundColor: const Color(0xFFF68D2E),
+                          elevation: 4,
+                          shape: const CircleBorder(),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              // const Icon(
+                              //   Icons.crop_free_outlined,     // cuatro L apuntando hacia fuera
+                              //   size: 60,            // ajústalo para que encaje perfectamente
+                              //   color: Colors.white, // mismo color que el icono
+                              // ),
+                              CustomPaint(
+                                size: const Size(48, 48),
+                                painter: CornerLPainter(
+                                  strokeWidth: 2, // aquí el grosor que quieras
+                                  color: Colors.white,
+                                ),
+                              ),
+                              // Icono en el centro
+                              const Icon(
+                                Icons.fastfood,
+                                size: 32,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
-                  ),
-                ),
+                  );
+                },
               ),
-            ],
-          );
-        },
-      ),
       // 3) El BottomAppBar con notch
       bottomNavigationBar: BottomAppBar(
         color: const Color(0xFFFCF6EC),
@@ -182,14 +190,18 @@ class _HomeScreenState extends State<HomeScreen>
           padding: const EdgeInsets.symmetric(horizontal: 0),
           child: Row(
             children: [
+              // Primer bloque con Home y Qué comer
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [_buildNavItem(0), _buildNavItem(1)],
                 ),
               ),
-              // Espacio para el FAB
-              const SizedBox(width: 90),
+
+              // Sólo dejamos hueco cuando NO estamos en Dietista (_currentIndex != 3)
+              if (_currentIndex != 3) const SizedBox(width: 90),
+
+              // Segundo bloque con Diario y Dietista
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
