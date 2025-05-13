@@ -23,20 +23,25 @@ class _ProcessingImagePageState extends State<ProcessingImagePage> {
 
   Future<void> _scanImage() async {
     try {
-      // Llama al API definido en lib/services/api.dart
+      // Llama al API definido en lib/services/api.dart (detectar el texto)
       final String result = await ApiService.scanFood(File(widget.imagePath));
-        MealLog mealLog = MealLog(
-        id: 0, 
+
+      // Llama al API definido en lib/services/api.dart (análisis nutricional)
+      final nutrition = await ApiService.analyzeDish(result);
+
+      MealLog mealLog = MealLog(
+        id: 0,
+        // userId: await ApiService.getCurrentUserId(), // Obtener id del usuario que ha hehco login
         userId: 0,
         mealDate: DateTime.now(),
-        mealTypeId: 1,
-        dishName: result.split('\n').first,
+        mealTypeId: 1, // Por defecto desayuno, después lo modifica el usuario
+        dishName: result.split('\n').first, // primera línea como nombre
         description: result,
-        calories: 0,
-        protein: 0.0,
-        carbs: 0.0,
-        fat: 0.0,
-        imageUrl: null,
+        calories: nutrition['calories'],
+        protein: (nutrition['protein'] as num).toDouble(),
+        carbs: (nutrition['carbs'] as num).toDouble(),
+        fat: (nutrition['fat'] as num).toDouble(),
+        imageUrl: null, // o súbela antes y pon la URL
         createdAt: DateTime.now(),
       );
       Navigator.of(context).pushReplacement(

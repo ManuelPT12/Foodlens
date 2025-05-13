@@ -794,7 +794,10 @@ class ApiService {
 
   // Función para enviar la imagen y obtener el texto
   static Future<String> scanFood(File imageFile) async {
-    /*String baseUrl = 'http://10.0.2.2:8000';
+    /*final responseBody = "Esto es un plato de prueba, dame datos aleatorios";
+
+    return responseBody;*/
+    String baseUrl = 'http://10.0.2.2:8000';
     final uri = Uri.parse('$baseUrl/scan_food'); // URL de la API
 
     // Creamos una solicitud multipart
@@ -825,11 +828,31 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Error al conectar con la API: $e');
-    }*/
-    final responseBody = "Esto es un plato de prueba";
-
-    return responseBody;
+    }
   }
+
+  static Future<Map<String, dynamic>> analyzeDish(String text) async {
+    print("Texto enviado para análisis: $text");
+
+    String baseUrl = 'http://10.0.2.2:8000';
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/analyze_dish'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'text': text}),
+    );
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Error al analizar el plato');
+    }
+  }
+
+  /*static Future<int> getCurrentUserId() async {
+    // Puedes guardar el userId en SharedPreferences al hacer login
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('user_id') ?? 0;
+  }*/
 
   // Función para actualizar MealLog
   static Future<bool> updateMealLog(MealLog meal) async {
