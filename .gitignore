@@ -67,3 +67,4 @@ node_modules/
 # Logs y temporales
 *.log
 tmp/
+*.pth
