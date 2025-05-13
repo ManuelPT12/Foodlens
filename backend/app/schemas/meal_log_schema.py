@@ -7,7 +7,7 @@ from datetime import datetime
 class MealLogBase(BaseModel):
     user_id: int
     meal_date: datetime
-    meal_type: str
+    meal_type: int
     dish_name: str
     description: Optional[str] = None
     calories: Optional[int] = None
@@ -44,6 +44,7 @@ class MealLogUpdate(BaseModel):
     class Config:
         from_attributes = True
 
+
 class MealLogOut(MealLogBase):
     """
     Respuesta para GET /meal-logs y GET /meal-logs/{id}.
@@ -54,3 +55,4 @@ class MealLogOut(MealLogBase):
 
     class Config:
         from_attributes = True
+

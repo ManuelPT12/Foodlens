@@ -3,6 +3,7 @@
 from pydantic import BaseModel, HttpUrl, AnyUrl
 # Usa AnyUrl para permitir URLs relativas
 type IconUrl = AnyUrl
+
 from typing import Optional
 
 class AllergenBase(BaseModel):
@@ -30,3 +31,4 @@ class AllergenOut(AllergenBase):
     class Config:
         orm_mode = True
         from_attributes = True
+

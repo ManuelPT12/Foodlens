@@ -331,6 +331,7 @@ class HomePageContent extends StatelessWidget {
     final consumedProtein = logs.fold<double>(0, (sum, m) => sum + m.protein);
     final consumedFat = logs.fold<double>(0, (sum, m) => sum + m.fat);
     final consumedCarbs = logs.fold<double>(0, (sum, m) => sum + m.carbs);
+
     return ScrollConfiguration(
       behavior: NoGlowScrollBehavior(),
       child: SingleChildScrollView(
@@ -421,7 +422,7 @@ class HomePageContent extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-
+              
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(

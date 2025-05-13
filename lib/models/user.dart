@@ -53,6 +53,4 @@ class User {
       isDiabetic: json['is_diabetic'] as bool,
     );
   }
-  
 }
-
