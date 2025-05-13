@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+import '../providers/auth_provider.dart';
 import 'diary.dart';
 import 'dietist.dart';
+import '../models/meal_log.dart';
+import '../models/user_diet.dart';
 import 'what_to_eat.dart';
 import 'calendar_slider.dart';
+import '../services/api.dart';
 import '../widgets/no_glow_scroll_behavior.dart';
 
 class HomePage extends StatefulWidget {
-  final String userName;
-  const HomePage({Key? key, this.userName = 'Sergio'}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -17,6 +22,13 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   // Índice de la pestaña activa
   int _currentIndex = 0;
+  late int _userId;
+  late String _userName;
+
+  final ApiService _api = ApiService();
+  List<MealLog> _todayLogs = [];
+  UserDiet? _diet;
+  bool _loading = true;
 
   // Controles de animación del pulso
   late final AnimationController _pulseController;
@@ -38,7 +50,11 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
+    final auth = context.read<AuthProvider>();
+    _userId = auth.user!.id;
+    _userName = auth.user!.firstName;
     // Center today in the window by subtracting 3 days
+    _loadData();
     final today = DateTime.now();
     _startDate = today.subtract(const Duration(days: 3));
     _pulseController = AnimationController(
@@ -57,12 +73,37 @@ class _HomePageState extends State<HomePage>
     setState(() {
       _startDate = _startDate.add(Duration(days: days));
     });
+    _loadData();
   }
 
   @override
   void dispose() {
     _pulseController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadData() async {
+    setState(() => _loading = true);
+
+    // 1) dieta del usuario
+    final diet = await _api.fetchUserDiet(userId: _userId);
+    // 2) meal logs sólo para el día seleccionado
+    final date = _days[_selectedDayIndex];
+    final todayLogs = await _api.fetchMealLogsByDate(
+      userId: _userId,
+      date: date,
+    );
+
+    setState(() {
+      _diet = diet;
+      _todayLogs = todayLogs;
+      _loading = false;
+    });
+  }
+
+  void _onDaySelected(int idx) {
+    setState(() => _selectedDayIndex = idx);
+    _loadData(); // recarga al cambiar fecha
   }
 
   @override
@@ -82,7 +123,7 @@ class _HomePageState extends State<HomePage>
             Row(
               children: [
                 Text(
-                  widget.userName,
+                  _userName,
                   style: const TextStyle(
                     color: Color(0xFF0F3C33),
                     fontWeight: FontWeight.bold,
@@ -98,25 +139,32 @@ class _HomePageState extends State<HomePage>
           ],
         ),
       ),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: [
-          HomePageContent(
-            days: _days,
-            selectedDayIndex: _selectedDayIndex,
-            onSelectDay: (idx) => setState(() => _selectedDayIndex = idx),
-            shiftWindow: _shiftWindow,
-          ),
-          const WhatToEatPage(),
-          DiaryPage(
-            days: _days,
-            selectedDayIndex: _selectedDayIndex,
-            onSelectDay: (idx) => setState(() => _selectedDayIndex = idx),
-            shiftWindow: _shiftWindow,
-          ),
-          const DietistPage(),
-        ],
-      ),
+      body:
+          _loading
+              ? const Center(child: CircularProgressIndicator())
+              : IndexedStack(
+                index: _currentIndex,
+                children: [
+                  HomePageContent(
+                    days: _days,
+                    selectedDayIndex: _selectedDayIndex,
+                    onSelectDay: _onDaySelected,
+                    shiftWindow: _shiftWindow,
+                    logs: _todayLogs,
+                    diet: _diet!,
+                    onGoToDiary: () => setState(() => _currentIndex = 2),
+                  ),
+                  const WhatToEatPage(),
+                  DiaryPage(
+                    days: _days,
+                    selectedDayIndex: _selectedDayIndex,
+                    onSelectDay:
+                        (idx) => setState(() => _selectedDayIndex = idx),
+                    shiftWindow: _shiftWindow,
+                  ),
+                  const DietistPage(),
+                ],
+              ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton:
           _currentIndex == 3
@@ -262,6 +310,9 @@ class HomePageContent extends StatelessWidget {
   final int selectedDayIndex;
   final ValueChanged<int> onSelectDay;
   final void Function(int) shiftWindow;
+  final List<MealLog> logs;
+  final UserDiet diet;
+  final VoidCallback onGoToDiary;
 
   const HomePageContent({
     Key? key,
@@ -269,10 +320,18 @@ class HomePageContent extends StatelessWidget {
     required this.selectedDayIndex,
     required this.onSelectDay,
     required this.shiftWindow,
+    required this.logs,
+    required this.diet,
+    required this.onGoToDiary,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final consumedCalories = logs.fold<int>(0, (sum, m) => sum + m.calories);
+    final consumedProtein = logs.fold<double>(0, (sum, m) => sum + m.protein);
+    final consumedFat = logs.fold<double>(0, (sum, m) => sum + m.fat);
+    final consumedCarbs = logs.fold<double>(0, (sum, m) => sum + m.carbs);
+
     return ScrollConfiguration(
       behavior: NoGlowScrollBehavior(),
       child: SingleChildScrollView(
@@ -310,22 +369,45 @@ class HomePageContent extends StatelessWidget {
                         Icons.arrow_forward,
                         color: Color(0xFF0F3C33),
                       ),
-                      onPressed: () {},
+                      onPressed: onGoToDiary,
                     ),
                   ],
                 ),
               ),
-              SizedBox(
-                height: 100,
-                child: Padding(
+              if (logs.isEmpty) ...[
+                Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 3,
-                    itemBuilder: (ctx, i) => const _MealCard(),
+                  child: Column(
+                    children: [
+                      Text(
+                        'No se registraron alimentos',
+                        style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                      ),
+                      const SizedBox(height: 8),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFF68D2E),
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: onGoToDiary,
+                        child: const Text('Registrar alimentos'),
+                      ),
+                    ],
                   ),
                 ),
-              ),
+              ] else ...[
+                SizedBox(
+                  height: 100,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: logs.length,
+                      itemBuilder: (ctx, i) => MealCard(log: logs[i]),
+                    ),
+                  ),
+                ),
+              ],
               const SizedBox(height: 24),
               // Resumen de Nutrientes con padding
               Padding(
@@ -340,38 +422,114 @@ class HomePageContent extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
+              
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
+                  children: [
                     _CircleInfo(
                       label: 'Calorías',
-                      value: 586,
-                      unit: '2019',
-                      color: Color(0xFFE94B35),
+                      value: consumedCalories,
+                      unit: diet.dailyCalories.toString(),
+                      color: const Color(0xFFE94B35),
                     ),
                     _CircleInfo(
-                      label: 'Proteína',
-                      value: 37,
-                      unit: '151',
-                      color: Color(0xFF0F3C33),
+                      label: 'Proteínas',
+                      value: consumedProtein.toInt(),
+                      unit: diet.dailyProtein.toStringAsFixed(0),
+                      color: const Color(0xFF0F3C33),
                     ),
                     _CircleInfo(
-                      label: 'Grasa',
-                      value: 31,
-                      unit: '67',
-                      color: Color(0xFFF68D2E),
+                      label: 'Grasas',
+                      value: consumedFat.toInt(),
+                      unit: diet.dailyFat.toStringAsFixed(0),
+                      color: const Color(0xFFF68D2E),
                     ),
                     _CircleInfo(
-                      label: 'Carbohidr',
-                      value: 40,
-                      unit: '201',
-                      color: Color(0xFF4DB879),
+                      label: 'Carbohidratos',
+                      value: consumedCarbs.toInt(),
+                      unit: diet.dailyCarbs.toStringAsFixed(0),
+                      color: const Color(0xFF4DB879),
                     ),
                   ],
                 ),
               ),
+              const SizedBox(height: 16),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => Navigator.pushNamed(context, '/dietPlan'),
+                        child: Container(
+                          height: 100,
+                          margin: const EdgeInsets.only(right: 8),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF5F5F5),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(
+                                Icons.event_note,
+                                size: 32,
+                                color: Color(0xFF0F3C33),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Plan dietético',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF0F3C33),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap:
+                            () => Navigator.pushNamed(context, '/restaurants'),
+                        child: Container(
+                          height: 100,
+                          margin: const EdgeInsets.only(left: 8),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF5F5F5),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(
+                                Icons.store,
+                                size: 32,
+                                color: Color(0xFF0F3C33),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Restaurantes',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF0F3C33),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -380,39 +538,38 @@ class HomePageContent extends StatelessWidget {
   }
 }
 
-class _MealCard extends StatelessWidget {
-  const _MealCard({Key? key}) : super(key: key);
+class MealCard extends StatelessWidget {
+  final MealLog log;
+  const MealCard({Key? key, required this.log}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Formatea la hora, p.ej. "17:26"
+    final time = DateFormat('HH:mm').format(log.mealDate);
+
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Container(
-        width: 250,
-        padding: const EdgeInsets.only(left: 4, right: 0, top: 0, bottom: 2),
+        width: 300,
+        padding: const EdgeInsets.only(left: 8, right: 0, top: 2, bottom: 2),
         child: Row(
           children: [
+            // Imagen: si log.imageUrl existe la carga de red, si no un asset de fallback
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                'assets/images/sample_meal.jpeg',
-                width: 60,
-                height: 60,
-                fit: BoxFit.cover,
-              ),
+              child: _buildImage(log.imageUrl),
             ),
             const SizedBox(width: 8),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Nombre del plato + menú “más”
                   Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    // crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
                         child: Text(
-                          'Bowl de pollo con arroz y verduras',
+                          log.dishName,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 12,
@@ -428,61 +585,59 @@ class _MealCard extends StatelessWidget {
                           Icons.more_vert,
                           color: Color(0xFF0F3C33),
                         ),
-                        onSelected: (value) {},
+                        onSelected: (value) {
+                          // manejar acciones edit/delete/copy
+                        },
                         itemBuilder:
-                            (_) => [
-                              const PopupMenuItem(
+                            (_) => const [
+                              PopupMenuItem(
                                 value: 'edit',
                                 child: Text('Editar'),
                               ),
-                              const PopupMenuItem(
+                              PopupMenuItem(
                                 value: 'delete',
                                 child: Text('Eliminar'),
-                              ),
-                              const PopupMenuItem(
-                                value: 'copy',
-                                child: Text('Copiar'),
                               ),
                             ],
                         constraints: const BoxConstraints(minWidth: 50),
                       ),
                     ],
                   ),
-                  // const SizedBox(height: 2),
+                  // Tipo de comida y hora
                   Text(
-                    'Cena · Hoy 17:26',
+                    '${log.mealType} · $time',
                     style: TextStyle(color: Colors.grey[600], fontSize: 12),
                   ),
-                  // const Spacer(),
+                  // Nutrientes
                   Row(
-                    children: const [
+                    children: [
                       Text(
-                        '586kcal',
-                        style: TextStyle(
+                        '${log.calories} kcal',
+                        style: const TextStyle(
                           color: Color(0xFFE94B35),
                           fontSize: 12,
                         ),
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Text(
-                        '37g',
-                        style: TextStyle(
+                        '${log.protein.toStringAsFixed(0)} g',
+                        style: const TextStyle(
                           color: Color(0xFF0F3C33),
                           fontSize: 12,
                         ),
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Text(
-                        '31g',
-                        style: TextStyle(
+                        '${log.fat.toStringAsFixed(0)} g',
+                        style: const TextStyle(
                           color: Color(0xFFF68D2E),
                           fontSize: 12,
                         ),
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       Text(
-                        '40g',
-                        style: TextStyle(
+                        '${log.carbs.toStringAsFixed(0)} g',
+                        style: const TextStyle(
                           color: Color(0xFF4DB879),
                           fontSize: 12,
                         ),
@@ -497,6 +652,34 @@ class _MealCard extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildImage(String? url) {
+  const placeholder = 'assets/images/sample_meal.jpeg';
+  if (url == null) {
+    return Image.asset(placeholder, width: 60, height: 60, fit: BoxFit.cover);
+  }
+  // Si empieza por “http” lo tratamos como red
+  if (url.startsWith('http')) {
+    return Image.network(
+      url,
+      width: 60,
+      height: 60,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) {
+        // si falla la red, caemos al asset
+        return Image.asset(
+          placeholder,
+          width: 60,
+          height: 60,
+          fit: BoxFit.cover,
+        );
+      },
+    );
+  }
+  // Si no, asumimos un asset local (quita “file://” si viene así)
+  final assetPath = url.replaceFirst(RegExp(r'^file://'), '');
+  return Image.asset(assetPath, width: 60, height: 60, fit: BoxFit.cover);
 }
 
 class _CircleInfo extends StatelessWidget {
@@ -533,9 +716,9 @@ class _CircleInfo extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 4),
-        Text('/\$unit', style: const TextStyle(fontSize: 12)),
+        Text('/$unit', style: const TextStyle(fontSize: 12)),
         const SizedBox(height: 4),
-        Text(label, style: const TextStyle(fontSize: 12)),
+        Text(label, style: const TextStyle(fontSize: 10)),
       ],
     );
   }

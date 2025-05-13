@@ -2,7 +2,7 @@ class MealLog {
   final int id;
   final int userId;
   final DateTime mealDate;
-  final int mealTypeId;
+  final String mealType;
   final String dishName;
   final String description;
   final int calories;
@@ -16,7 +16,7 @@ class MealLog {
     required this.id,
     required this.userId,
     required this.mealDate,
-    required this.mealTypeId,
+    required this.mealType,
     required this.dishName,
     required this.description,
     required this.calories,
@@ -32,7 +32,7 @@ class MealLog {
       id: json['id'] as int,
       userId: json['user_id'] as int,
       mealDate: DateTime.parse(json['meal_date'] as String),
-      mealTypeId: json['meal_type'] as int,
+      mealType: json['meal_type'] as String,
       dishName: json['dish_name'] as String,
       description: json['description'] as String,
       calories: json['calories'] as int,
@@ -49,7 +49,7 @@ class MealLog {
       'id': id,
       'user_id': userId,
       'meal_date': mealDate.toIso8601String(),
-      'meal_type': mealTypeId,
+      'meal_type': mealType,
       'dish_name': dishName,
       'description': description,
       'calories': calories,

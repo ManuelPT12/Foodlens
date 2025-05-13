@@ -30,7 +30,7 @@ Future<void> _login() async {
     } catch (e) {
       debugPrint('🛑 Login failed: $e');
       setState(() {
-        _errorMessage = 'User or password incorrect';
+        _errorMessage = 'Usuario o contraseña incorrecta';
       });
     } finally {
       setState(() {
@@ -91,7 +91,7 @@ Future<void> _login() async {
                                 validator:
                                     (value) =>
                                         value!.isEmpty
-                                            ? 'Enter your email'
+                                            ? 'Introduzca su email'
                                             : null,
                               ),
                             ),
@@ -105,7 +105,7 @@ Future<void> _login() async {
                                 controller: _passwordController,
                                 obscureText: true,
                                 decoration: const InputDecoration(
-                                  labelText: 'Password',
+                                  labelText: 'Contraseña',
                                   prefixIcon: Icon(
                                     Icons.lock,
                                     color: Color(0xFF0F3C33),
@@ -117,7 +117,7 @@ Future<void> _login() async {
                                 validator:
                                     (value) =>
                                         value!.isEmpty
-                                            ? 'Enter your password'
+                                            ? 'Introduzca su contraseña'
                                             : null,
                               ),
                             ),
@@ -136,7 +136,7 @@ Future<void> _login() async {
                                 : ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xFFF68D2E),
-                                    foregroundColor: const Color(0xFF0F3C33),
+                                    foregroundColor: const Color(0xFFFFFFFF),
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 32,
                                       vertical: 12,
@@ -155,7 +155,7 @@ Future<void> _login() async {
                                 );
                               },
                               child: const Text(
-                                "Don't have an account? Register",
+                                "¿No tienes cuenta? Registrate",
                                 style: TextStyle(color: Color(0xFF0F3C33)),
                               ),
                             ),

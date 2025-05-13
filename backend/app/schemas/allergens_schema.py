@@ -1,6 +1,9 @@
 # schemas/allergens_schema.py
 
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, HttpUrl, AnyUrl
+# Usa AnyUrl para permitir URLs relativas
+type IconUrl = AnyUrl
+
 from typing import Optional
 
 class AllergenBase(BaseModel):
@@ -20,9 +23,12 @@ class AllergenUpdate(BaseModel):
 
     class Config:
         orm_mode = True
+        from_attributes = True
 
 class AllergenOut(AllergenBase):
     id: int
 
     class Config:
         orm_mode = True
+        from_attributes = True
+

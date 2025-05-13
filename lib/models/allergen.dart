@@ -1,8 +1,8 @@
 class Allergen {
   final int id;
   final String name;
-  final String iconUrl;
-  final String description;
+  final String? iconUrl;
+  final String? description;
 
   Allergen({
     required this.id,
@@ -15,8 +15,8 @@ class Allergen {
     return Allergen(
       id: json['id'] as int,
       name: json['name'] as String,
-      iconUrl: json['icon_url'] as String,
-      description: json['description'] as String,
+      iconUrl: json['icon_url'] as String?,
+      description: json['description'] as String?,
     );
   }
 

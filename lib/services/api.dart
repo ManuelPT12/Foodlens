@@ -12,7 +12,7 @@ class ApiService {
   }) async {
     final resp = await http.post(
       Uri.parse('$baseUrl/login'),
-      headers: {'Content-Type':'application/json'},
+      headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email, 'password': password}),
     );
     if (resp.statusCode == 200) {
@@ -23,7 +23,7 @@ class ApiService {
     }
   }
 
-  Future<bool> registerUser({
+  Future<int> registerUser({
     required String firstName,
     required String lastName,
     required String birthDate,
@@ -33,6 +33,8 @@ class ApiService {
     required String gender,
     required String goal,
     required String dietType,
+    required bool isDiabetic,
+    required String activityLevel,
     required String email,
     required String password,
   }) async {
@@ -47,6 +49,8 @@ class ApiService {
       'gender': gender,
       'goal': goal,
       'diet_type': dietType,
+      'is_diabetic': isDiabetic,
+      'activity_level': activityLevel,
       'email': email,
       'password': password,
     };
@@ -58,13 +62,18 @@ class ApiService {
         body: jsonEncode(body),
       );
 
-      print('STATUS: ${response.statusCode}');
-      print('BODY: ${response.body}');
+      print('STATUS: \${response.statusCode}');
+      print('BODY: \${response.body}');
 
-      return response.statusCode == 200;
+      if (response.statusCode == 201) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        return data['id'] as int;
+      } else {
+        throw Exception('Error al registrar usuario: ${response.statusCode}');
+      }
     } catch (e) {
-      print('ERROR during request: $e');
-      return false;
+      print('ERROR durante la petición: \$e');
+      return 0;
     }
   }
 
@@ -98,35 +107,35 @@ class ApiService {
 
   Future<User> updateUser({
     required int id,
-    required String firstName,
-    required String lastName,
-    required DateTime birthDate,
-    required double weight,
-    required double height,
-    required int age,
-    required String gender,
-    required String goal,
-    required String dietType,
-    required String email,
-    required String password,
-    required String activityLevel,
-    required bool isDiabetic,
+    String? firstName,
+    String? lastName,
+    DateTime? birthDate,
+    double? weight,
+    double? height,
+    int? age,
+    String? gender,
+    String? goal,
+    String? dietType,
+    String? email,
+    String? password,
+    String? activityLevel,
+    bool? isDiabetic,
   }) async {
-    final body = {
-      'first_name': firstName,
-      'last_name': lastName,
-      'birth_date': birthDate.toIso8601String(),
-      'weight': weight,
-      'height': height,
-      'age': age,
-      'gender': gender,
-      'goal': goal,
-      'diet_type': dietType,
-      'email': email,
-      'password': password,
-      'activity_level': activityLevel,
-      'is_diabetic': isDiabetic,
-    };
+    final Map<String, dynamic> body = {};
+    if (firstName != null) body['first_name'] = firstName;
+    if (lastName != null) body['last_name'] = lastName;
+    if (birthDate != null) body['birth_date'] = birthDate.toIso8601String();
+    if (weight != null) body['weight'] = weight;
+    if (height != null) body['height'] = height;
+    if (age != null) body['age'] = age;
+    if (gender != null) body['gender'] = gender;
+    if (goal != null) body['goal'] = goal;
+    if (dietType != null) body['diet_type'] = dietType;
+    if (email != null) body['email'] = email;
+    if (password != null) body['password'] = password;
+    if (activityLevel != null)
+      body['activity_level'] = activityLevel.toLowerCase();
+    if (isDiabetic != null) body['is_diabetic'] = isDiabetic;
 
     final response = await http.put(
       Uri.parse('$baseUrl/users/$id'),
@@ -143,7 +152,7 @@ class ApiService {
 
   Future<List<Allergen>> fetchAllergens() async {
     final response = await http.get(
-      Uri.parse('$baseUrl/allergens'),
+      Uri.parse('$baseUrl/allergens/'),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -180,6 +189,40 @@ class ApiService {
       return Allergen.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Error al crear el alergénico: ${response.statusCode}');
+    }
+  }
+
+  Future<List<UserAllergen>> fetchUserAllergens() async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/user-allergens'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      return data
+          .map((json) => UserAllergen.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      throw Exception('Error al cargar user_allergens: ${response.statusCode}');
+    }
+  }
+
+  Future<UserAllergen> registerUserAllergen({
+    required int userId,
+    required int allergenId,
+  }) async {
+    final body = {'user_id': userId, 'allergen_id': allergenId};
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/user-allergens'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode == 201) {
+      return UserAllergen.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Error al crear user_allergen: ${response.statusCode}');
     }
   }
 
@@ -233,7 +276,7 @@ class ApiService {
 
   Future<List<DishAllergen>> fetchDishAllergens() async {
     final response = await http.get(
-      Uri.parse('$baseUrl/dish_allergens_registered'),
+      Uri.parse('$baseUrl/dish-allergens-registered'),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -254,7 +297,7 @@ class ApiService {
     required int allergenId,
   }) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/dish_allergens_registered'),
+      Uri.parse('$baseUrl/dish-allergens-registered'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'dish_id': dishId, 'allergen_id': allergenId}),
     );
@@ -268,41 +311,17 @@ class ApiService {
     }
   }
 
-  Future<List<MealType>> fetchMealTypes() async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/meal_types'),
-      headers: {'Content-Type': 'application/json'},
+  Future<List<MealLog>> fetchMealLogs({int? userId}) async {
+    // Construimos la URI; si userId != null, lo añadimos como query param
+    final uri = Uri.parse('$baseUrl/meal-logs/').replace(
+      queryParameters: userId != null ? {'user_id': userId.toString()} : null,
     );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      return data
-          .map((json) => MealType.fromJson(json as Map<String, dynamic>))
-          .toList();
-    } else {
-      throw Exception(
-        'Error al cargar tipos de comida: ${response.statusCode}',
-      );
-    }
-  }
 
-  Future<MealType> createMealType({required String name}) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/meal_types'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'name': name}),
-    );
-    if (response.statusCode == 201) {
-      return MealType.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Error al crear tipo de comida: ${response.statusCode}');
-    }
-  }
-
-  Future<List<MealLog>> fetchMealLogs() async {
     final response = await http.get(
-      Uri.parse('$baseUrl/meal_log'),
+      uri,
       headers: {'Content-Type': 'application/json'},
     );
+
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       return data
@@ -313,10 +332,25 @@ class ApiService {
     }
   }
 
+  Future<List<MealLog>> fetchMealLogsByDate({
+    required int userId,
+    required DateTime date,
+  }) async {
+    // 1) Trae todos los logs de ese usuario
+    final all = await fetchMealLogs(
+      userId: userId,
+    ); // o if fetchMealLogs acepta userId: fetchMealLogs(userId)
+    // 2) Filtra sólo los que coinciden con year/month/day
+    return all.where((log) {
+      final d = log.mealDate.toLocal();
+      return d.year == date.year && d.month == date.month && d.day == date.day;
+    }).toList();
+  }
+
   Future<MealLog> createMealLog({
     required int userId,
     required DateTime mealDate,
-    required int mealTypeId,
+    required String mealType,
     required String dishName,
     required String description,
     required int calories,
@@ -328,7 +362,7 @@ class ApiService {
     final body = {
       'user_id': userId,
       'meal_date': mealDate.toIso8601String(),
-      'meal_type': mealTypeId,
+      'meal_type': mealType,
       'dish_name': dishName,
       'description': description,
       'calories': calories,
@@ -339,7 +373,7 @@ class ApiService {
     };
 
     final response = await http.post(
-      Uri.parse('$baseUrl/meal_log'),
+      Uri.parse('$baseUrl/meal-logs'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(body),
     );
@@ -394,7 +428,7 @@ class ApiService {
 
   Future<List<MenuDish>> fetchMenuDishes() async {
     final response = await http.get(
-      Uri.parse('$baseUrl/menu_dishes'),
+      Uri.parse('$baseUrl/menu-dishes'),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -430,7 +464,7 @@ class ApiService {
     };
 
     final response = await http.post(
-      Uri.parse('$baseUrl/menu_dishes'),
+      Uri.parse('$baseUrl/menu-dishes'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(body),
     );
@@ -444,7 +478,7 @@ class ApiService {
 
   Future<List<RestaurantMenu>> fetchRestaurantMenus() async {
     final response = await http.get(
-      Uri.parse('$baseUrl/restaurant_menus'),
+      Uri.parse('$baseUrl/restaurant-menus'),
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
@@ -475,7 +509,7 @@ class ApiService {
     };
 
     final response = await http.post(
-      Uri.parse('$baseUrl/restaurant_menus'),
+      Uri.parse('$baseUrl/restaurant-menus'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(body),
     );
@@ -489,7 +523,7 @@ class ApiService {
 
   Future<List<RestaurantTypeLink>> fetchRestaurantTypeLinks() async {
     final response = await http.get(
-      Uri.parse('$baseUrl/restaurant_type_links'),
+      Uri.parse('$baseUrl/restaurant-type-links'),
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
@@ -513,7 +547,7 @@ class ApiService {
     final body = {'restaurant_id': restaurantId, 'type_id': typeId};
 
     final response = await http.post(
-      Uri.parse('$baseUrl/restaurant_type_links'),
+      Uri.parse('$baseUrl/restaurant-type-links'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(body),
     );
@@ -568,43 +602,9 @@ class ApiService {
     }
   }
 
-  Future<List<UserAllergen>> fetchUserAllergens() async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/user_allergens'),
-      headers: {'Content-Type': 'application/json'},
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      return data
-          .map((json) => UserAllergen.fromJson(json as Map<String, dynamic>))
-          .toList();
-    } else {
-      throw Exception('Error al cargar user_allergens: ${response.statusCode}');
-    }
-  }
-
-  Future<UserAllergen> registerUserAllergen({
-    required int userId,
-    required int allergenId,
-  }) async {
-    final body = {'user_id': userId, 'allergen_id': allergenId};
-
-    final response = await http.post(
-      Uri.parse('$baseUrl/user_allergens'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(body),
-    );
-
-    if (response.statusCode == 201) {
-      return UserAllergen.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Error al crear user_allergen: ${response.statusCode}');
-    }
-  }
-
   Future<UserDiet> fetchUserDiet({required int userId}) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/user_diets/$userId'),
+      Uri.parse('$baseUrl/user-diets/$userId'),
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
@@ -630,7 +630,7 @@ class ApiService {
     };
 
     final response = await http.post(
-      Uri.parse('$baseUrl/user_diets'),
+      Uri.parse('$baseUrl/user-diets'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(body),
     );
@@ -646,7 +646,7 @@ class ApiService {
     required int userId,
   }) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/user_favorite_meal_types?user_id=$userId'),
+      Uri.parse('$baseUrl/user-favorite-meal-types?user_id=$userId'),
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
@@ -671,7 +671,7 @@ class ApiService {
     final body = {'user_id': userId, 'meal_type_id': mealTypeId};
 
     final response = await http.post(
-      Uri.parse('$baseUrl/user_favorite_meal_types'),
+      Uri.parse('$baseUrl/user-favorite-meal-types'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(body),
     );
@@ -687,7 +687,7 @@ class ApiService {
 
   Future<List<UserMealPlan>> fetchUserMealPlans({required int userId}) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/user_meal_plan?user_id=$userId'),
+      Uri.parse('$baseUrl/user-meal-plan?user_id=$userId'),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -704,7 +704,7 @@ class ApiService {
   Future<UserMealPlan> createUserMealPlan({
     required int userId,
     required DateTime planDate,
-    required int mealType,
+    required String mealType,
     required String dishDescription,
     required int calories,
     required double protein,
@@ -725,7 +725,7 @@ class ApiService {
     };
 
     final response = await http.post(
-      Uri.parse('$baseUrl/user_meal_plan'),
+      Uri.parse('$baseUrl/user-meal-plan'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(body),
     );
@@ -741,7 +741,7 @@ class ApiService {
     required int userId,
   }) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/user_restaurant_ratings?user_id=$userId'),
+      Uri.parse('$baseUrl/user-restaurant-ratings?user_id=$userId'),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -774,7 +774,7 @@ class ApiService {
     };
 
     final response = await http.post(
-      Uri.parse('$baseUrl/user_restaurant_ratings'),
+      Uri.parse('$baseUrl/user-restaurant-ratings'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(body),
     );
@@ -787,5 +787,4 @@ class ApiService {
       );
     }
   }
-
 }
