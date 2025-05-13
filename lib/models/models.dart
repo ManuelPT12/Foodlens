@@ -2,7 +2,6 @@ export 'allergen.dart';
 export 'dish_allergen.dart';
 export 'dish.dart';
 export 'meal_log.dart';
-export 'meal_type.dart';
 export 'menu.dart';
 export 'menu_dish.dart';
 export 'restaurant.dart';

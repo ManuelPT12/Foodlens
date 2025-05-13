@@ -54,9 +54,7 @@ class MealTypes(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
 
-    meal_logs = relationship("MealLog", back_populates="meal_type_rel", cascade="all, delete-orphan")
     favorite_meal_by_user = relationship("UserFavoriteMealTypes", back_populates="meal_type", cascade="all, delete-orphan")
-    meal_plans = relationship("UserMealPlan", back_populates="meal_type_rel", cascade="all, delete-orphan")
     restaurant_types = relationship("RestaurantTypeLinks", back_populates="type", cascade="all, delete-orphan")
 
 class MealLog(Base):
@@ -64,7 +62,7 @@ class MealLog(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
     meal_date = Column(Date, nullable=False)
-    meal_type = Column(Integer, ForeignKey("meal_types.id", ondelete="SET NULL"))
+    meal_type = Column(String(55))
     dish_name = Column(String(255))
     description = Column(Text)
     calories = Column(Integer)
@@ -75,7 +73,6 @@ class MealLog(Base):
     created_at = Column(TIMESTAMP, server_default=func.now())
 
     user = relationship("User", back_populates="meal_logs")
-    meal_type_rel = relationship("MealTypes", back_populates="meal_logs")
 
 class UserDiets(Base):
     __tablename__ = "user_diets"
@@ -181,7 +178,7 @@ class UserMealPlan(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"))
     plan_date = Column(Date, nullable=False)
-    meal_type = Column(Integer, ForeignKey("meal_types.id", ondelete="SET NULL"))
+    meal_type = Column(String(55))
     dish_description = Column(Text)
     calories = Column(Integer)
     protein = Column(DECIMAL(6, 2))
@@ -191,7 +188,6 @@ class UserMealPlan(Base):
     created_at = Column(TIMESTAMP, server_default=func.now())
 
     user = relationship("User", back_populates="meal_plans")
-    meal_type_rel = relationship("MealTypes", back_populates="meal_plans")
 
 class UserRestaurantRatings(Base):
     __tablename__ = "user_restaurant_ratings"

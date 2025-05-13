@@ -4,6 +4,7 @@ from app.database import SessionLocal, redis_client
 from app.models.models import MealLog
 from app.schemas.meal_log_schema import MealLogCreate, MealLogOut, MealLogUpdate
 import json
+from fastapi.encoders import jsonable_encoder
 
 router = APIRouter(prefix="/meal-logs", tags=["Meal Logs"])
 
@@ -28,10 +29,16 @@ def get_all_meal_logs(db: Session = Depends(get_db)):
     cached = redis_client.get("meal_logs_cache")
     if cached:
         return json.loads(cached)
+    
     items = db.query(MealLog).all()
-    data = [MealLogOut.from_orm(i).dict() for i in items]
-    redis_client.set("meal_logs_cache", json.dumps(data), ex=60)
-    return data
+    # 1) crea instancias Pydantic
+    pydantic_objs = [MealLogOut.from_orm(i) for i in items]
+    # 2) convierte a tipos JSON-friendly (datetime → ISO string, etc.)
+    json_ready = jsonable_encoder(pydantic_objs)
+    # 3) guarda en Redis
+    redis_client.set("meal_logs_cache", json.dumps(json_ready), ex=60)
+    # 4) devuelve la versión JSONable (no hay que .dict() ni nada)
+    return json_ready
 
 @router.get("/{meal_log_id}", response_model=MealLogOut)
 def get_meal_log(meal_log_id: int, db: Session = Depends(get_db)):

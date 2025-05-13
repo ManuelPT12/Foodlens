@@ -7,7 +7,7 @@ from datetime import datetime
 class MealLogBase(BaseModel):
     user_id: int
     meal_date: datetime
-    meal_type: int
+    meal_type: str
     dish_name: str
     description: Optional[str] = None
     calories: Optional[int] = None
@@ -16,10 +16,12 @@ class MealLogBase(BaseModel):
     fat: Optional[float] = None
     image_url: Optional[str] = None
 
+    class Config:
+        from_attributes = True
+
 class MealLogCreate(MealLogBase):
     """
     Usado en POST /meal-logs para crear un nuevo registro de comida.
-    Todos los campos de MealLogBase son obligatorios salvo los Optional.
     """
     pass
 
@@ -30,7 +32,7 @@ class MealLogUpdate(BaseModel):
     """
     user_id: Optional[int] = None
     meal_date: Optional[datetime] = None
-    meal_type: Optional[int] = None
+    meal_type: Optional[str] = None
     dish_name: Optional[str] = None
     description: Optional[str] = None
     calories: Optional[int] = None
@@ -40,7 +42,7 @@ class MealLogUpdate(BaseModel):
     image_url: Optional[str] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class MealLogOut(MealLogBase):
     """
@@ -51,4 +53,4 @@ class MealLogOut(MealLogBase):
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
