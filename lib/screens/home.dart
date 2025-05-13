@@ -151,11 +151,11 @@ class _HomeScreenState extends State<HomeScreen>
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
-                      // const Icon(
-                      //   Icons.crop_free_outlined,     // cuatro L apuntando hacia fuera
-                      //   size: 60,            // ajústalo para que encaje perfectamente
-                      //   color: Colors.white, // mismo color que el icono
-                      // ),
+                      const Icon(
+                        Icons.crop_free_outlined,     // cuatro L apuntando hacia fuera
+                        size: 60,            // ajústalo para que encaje perfectamente
+                        color: Colors.white, // mismo color que el icono
+                      ),
                       CustomPaint(
                         size: const Size(48, 48),
                         painter: CornerLPainter(

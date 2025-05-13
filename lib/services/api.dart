@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/models.dart';
+import 'dart:io';
+import 'package:path/path.dart';
+import 'package:http_parser/http_parser.dart'; // para MediaType
 
 class ApiService {
   final String baseUrl =
@@ -786,6 +789,73 @@ class ApiService {
       return User.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Error al actualizar usuario: ${response.statusCode}');
+    }
+  }
+
+  // Función para enviar la imagen y obtener el texto
+  static Future<String> scanFood(File imageFile) async {
+    /*String baseUrl = 'http://10.0.2.2:8000';
+    final uri = Uri.parse('$baseUrl/scan_food'); // URL de la API
+
+    // Creamos una solicitud multipart
+    final request = http.MultipartRequest('POST', uri);
+
+    // Adjuntamos el archivo de imagen
+    String mimeType = imageFile.path.endsWith('.png') ? 'png' : 'jpeg';
+    final file = await http.MultipartFile.fromPath(
+      'file',
+      imageFile.path,
+      filename: basename(imageFile.path),
+      contentType: MediaType('image', mimeType),
+    );
+    request.files.add(file);
+
+    try {
+      // Realizamos la solicitud
+      final response = await request.send();
+
+      // Verificamos el código de estado de la respuesta
+      if (response.statusCode == 200) {
+        // Leemos el cuerpo de la respuesta
+        final responseBody = await response.stream.bytesToString();
+
+        return responseBody;
+      } else {
+        throw Exception('Error al procesar la imagen');
+      }
+    } catch (e) {
+      throw Exception('Error al conectar con la API: $e');
+    }*/
+    final responseBody = "Esto es un plato de prueba";
+
+    return responseBody;
+  }
+
+  // Función para actualizar MealLog
+  static Future<bool> updateMealLog(MealLog meal) async {
+    String baseUrl = 'http://10.0.2.2:8000';
+    final uri = Uri.parse('$baseUrl/update-meal');
+
+    try {
+      // Realizamos una solicitud POST
+      final response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json', // Definimos que el contenido es JSON
+        },
+        body: json.encode(meal.toJson()), // Convertimos MealLog a JSON
+      );
+
+      if (response.statusCode == 200) {
+        // Si la respuesta es exitosa (código 200), devolvemos true
+        return true;
+      } else {
+        // Si la respuesta no es exitosa, lanzamos una excepción
+        throw Exception('Error al actualizar el MealLog');
+      }
+    } catch (e) {
+      // En caso de error de conexión o cualquier otro error
+      throw Exception('Error de conexión: $e');
     }
   }
 }

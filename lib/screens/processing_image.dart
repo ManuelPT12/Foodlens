@@ -24,13 +24,26 @@ class _ProcessingImagePageState extends State<ProcessingImagePage> {
   Future<void> _scanImage() async {
     try {
       // Llama al API definido en lib/services/api.dart
-      // final MealLog result =
-      //     await ApiService.scanFood(File(widget.imagePath));
-      // Navigator.of(context).pushReplacement(
-      //   MaterialPageRoute(
-      //     builder: (_) => ResultImagePage(result: result),
-      //   ),
-      // );
+      final String result = await ApiService.scanFood(File(widget.imagePath));
+        MealLog mealLog = MealLog(
+        id: 0, 
+        userId: 0,
+        mealDate: DateTime.now(),
+        mealTypeId: 1,
+        dishName: result.split('\n').first,
+        description: result,
+        calories: 0,
+        protein: 0.0,
+        carbs: 0.0,
+        fat: 0.0,
+        imageUrl: null,
+        createdAt: DateTime.now(),
+      );
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => ResultImagePage(result: mealLog),
+        ),
+      );
     } catch (e) {
       // Manejo básico de errores
       ScaffoldMessenger.of(context).showSnackBar(

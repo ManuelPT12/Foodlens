@@ -1,8 +1,11 @@
 fastapi
-uvicorn
+uvicorn[standard]
 sqlalchemy
 psycopg2-binary
 python-dotenv
 redis
 passlib[bcrypt]
-python-multipart 
+python-multipart
+easyocr
+torch
+pillow

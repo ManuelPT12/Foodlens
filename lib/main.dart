@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'screens/splash.dart';
 import '../widgets/no_glow_scroll_behavior.dart';
+import 'screens/camera.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +20,19 @@ class MyApp extends StatelessWidget {
       title: 'FoodLens',
       debugShowCheckedModeBanner: false,
       scrollBehavior: NoGlowScrollBehavior(),
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('es', 'ES'), // Español
+        Locale('en', 'US'), // Inglés
+      ],
       home: const SplashScreen(),
+      routes: {
+        '/camera': (context) => const CameraCapturePage(),
+      },
     );
   }
 }
